@@ -1,0 +1,5 @@
+// the configured options and settings for Tutorial
+#define VERSION_MAJOR @nomenus-rex_VERSION_MAJOR@
+#define VERSION_MINOR @nomenus-rex_VERSION_MINOR@
+#define VERSION_PATCH @nomenus-rex_VERSION_PATCH@
+

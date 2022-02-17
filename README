@@ -1,0 +1,28 @@
+───────┨ What is this? ┠────────
+
+Nomenus-rex is a CLI utility for the file mass renaming.
+
+───────┨ Installing ┠────────
+
+Nomenus-rex was created to be assembled with CMake. 
+So just run these commands:
+
+cmake ./
+make
+
+───────┨ How to use? ┠────────
+
+
+───────┨ Who is the author? ┠────────
+
+Nomenus-rex was written by Alexander N. Gulchenko aka Alexander Stahl in the 2020.
+
+───────┨ What is the license? ┠────────
+
+GPLv3. You can read it once more in the LICENSE file.
+
+───────┨ What if I don't like it? ┠────────
+
+You can destroy your copy in whatever way you like.
+
+
