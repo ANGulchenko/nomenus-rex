@@ -18,7 +18,7 @@ ADD_LIBRARY(AnyOption
 
 add_executable (nomenus-rex
     main.cpp
-    CLIparser.cpp CLIparser.h
+    configurationparser.cpp configurationparser.h
     rule.cpp rule.h
     renamer.cpp renamer.h
     )

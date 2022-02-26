@@ -4,82 +4,46 @@
 #include <iostream>
 #include <libconfig.h++>
 
-Renamer::Renamer(fs::path _source, fs::path _destination, fs::path _config)
-	: source_dir(_source)
-	, destination_dir(_destination)
+Renamer::Renamer()
 {
-	// Parsing the config, creating the Rules objects and putting them into the array.
-
-	using namespace libconfig;
-
-	Config cfg;
-
-	try
-	{
-		cfg.readFile(_config.c_str());
-	}
-	catch(const FileIOException &fioex)
-	{
-		std::cerr << "I/O error while reading file." << std::endl;
-		exit(EXIT_FAILURE);
-	}
-	catch(const ParseException &pex)
-	{
-		std::cerr << "Parse error at " << pex.getFile() << ":" << pex.getLine()
-				  << " - " << pex.getError() << std::endl;
-		exit(EXIT_FAILURE);
-	}
-
-	const Setting& root = cfg.getRoot();
-
-	const Setting &rules_raw = root["rules"];
-
-	int count = rules_raw.getLength();
-
-	std::string rule_type;
-	for(int i = 0; i < count; ++i)
-	{
-		const Setting &rule_raw = rules_raw[i];
-		rule_raw.lookupValue("type", rule_type);
-
-
-		if (rule_type == "date")
-		{
-			std::string date_format;
-			bool var1_present = rule_raw.lookupValue("date_format", date_format);
-			if (!var1_present)
-			{
-				std::cerr << "There is no 'date_format' variable in the 'date' rule." << std::endl;
-				exit(EXIT_FAILURE);
-			}
-			rules.push_back(RuleDate(date_format));
-		}else
-		if (rule_type == "text")
-		{
-			std::string text;
-			bool var1_present = rule_raw.lookupValue("text", text);
-			if (!var1_present)
-			{
-				std::cerr << "There is no 'text' variable in the 'text' rule." << std::endl;
-				exit(EXIT_FAILURE);
-			}
-			rules.push_back(RuleText(text));
-		}else
-		if (rule_type == "dir")
-		{
-			rules.push_back(RuleDir());
-		}else
-		if (rule_type == "integer")
-		{
-			rules.push_back(RuleInteger());
-		}else
-		if (rule_type == "extension")
-		{
-			rules.push_back(RuleExtension());
-		}
-	}
 
 }
+
+///////////////////
+void	Renamer::setPaths(const std::string& source, const std::string& destination)
+{
+	source_dir = {source};
+	destination_dir = {destination};
+}
+
+
+///////////////////
+
+void	Renamer::addDateRule(const std::string& format)
+{
+	rules.push_back(RuleDate(format));
+}
+
+void	Renamer::addTextRule(const std::string& text)
+{
+	rules.push_back(RuleText(text));
+}
+
+void	Renamer::addDirRule()
+{
+	rules.push_back(RuleDir());
+}
+
+void	Renamer::addIntegerRule()
+{
+	rules.push_back(RuleInteger());
+}
+
+void	Renamer::addExtensionRule()
+{
+	rules.push_back(RuleExtension());
+}
+
 
 fs::path Renamer::applyRulesToOneRelativeFilename(fs::path relative_path)
 {

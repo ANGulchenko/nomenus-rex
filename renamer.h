@@ -12,7 +12,18 @@ namespace fs = std::filesystem;
 class Renamer
 {
 public:
-	Renamer(fs::path source, fs::path destination, fs::path config);
+	Renamer();
+
+	////////////////////
+	void	setPaths(const std::string& source, const std::string& destination);
+	////////////////////
+	void	addDateRule(const std::string& format);
+	void	addTextRule(const std::string& text);
+	void	addDirRule();
+	void	addIntegerRule();
+	void	addExtensionRule();
+	////////////////////
+
 	fs::path applyRulesToOneRelativeFilename(fs::path relative_path);
 	void createRenameBijectionMap();
 	std::map<fs::path /*source*/, fs::path /*destination*/>	testRenameBijectionMap();
