@@ -80,6 +80,7 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 
 	const Setting& root = cfg.getRoot();
 
+	//////////////////////////////////////////////////////////////////////////////
 	// Check source/destination dirs. But we must remember that those dirs
 	// from CLI have bigger priority.
 
@@ -111,6 +112,13 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 
 	renamer.setPaths(source, destination);
 
+	//////////////////////////////////////////////////////////////////////////////
+
+	bool keep_dir_structure = false;
+	root.lookupValue("keep_dir_structure", keep_dir_structure);
+	renamer.setKeepDirStructure(keep_dir_structure);
+
+	//////////////////////////////////////////////////////////////////////////////
 
 	const Setting &rules_raw = root["rules"];
 
@@ -151,7 +159,47 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 		}else
 		if (rule_type == "integer")
 		{
-			renamer.addIntegerRule();
+			std::string str_mode;
+			RuleInteger::Mode mode = RuleInteger::Mode::global;
+			int  start;
+			int  step;
+
+			bool mode_present = rule_raw.lookupValue("mode", str_mode);
+			if (!mode_present)
+			{
+				std::cerr << "There is no 'mode' variable in the 'integer' rule." << std::endl;
+				exit(EXIT_FAILURE);
+			}else
+			{
+				if (str_mode == "global")
+				{
+					mode = RuleInteger::Mode::global;
+				}else
+				if (str_mode == "local at every dir")
+				{
+					mode = RuleInteger::Mode::local_at_every_dir;
+				}
+			}
+
+
+			bool start_present = rule_raw.lookupValue("start", start);
+			if (!start_present)
+			{
+				std::cerr << "There is no 'start' variable in the 'integer' rule." << std::endl;
+				exit(EXIT_FAILURE);
+			}
+
+			bool step_present = rule_raw.lookupValue("step", step);
+			if (!step_present)
+			{
+				std::cerr << "There is no 'step' variable in the 'integer' rule." << std::endl;
+				exit(EXIT_FAILURE);
+			}
+
+
+
+
+			renamer.addIntegerRule(mode, start, step);
 		}else
 		if (rule_type == "extension")
 		{
