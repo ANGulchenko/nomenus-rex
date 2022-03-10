@@ -40,9 +40,9 @@ void	Renamer::addTextRule(const std::string& text)
 	rules.push_back(new RuleText(text));
 }
 
-void	Renamer::addDirRule()
+void	Renamer::addDirRule(RuleDir::Mode mode, const std::string& separator)
 {
-	rules.push_back(new RuleDir());
+	rules.push_back(new RuleDir(mode, separator));
 }
 
 void	Renamer::addIntegerRule(RuleInteger::Mode mode, int start, int step)

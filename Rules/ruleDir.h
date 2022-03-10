@@ -7,8 +7,12 @@
 class RuleDir: public RuleBase
 {
 public:
-	RuleDir();
+	enum class Mode {whole, parent_only};
+	RuleDir(Mode _mode, std::string _separator);
 	void	process(std::filesystem::path& name);
+private:
+	Mode		mode;
+	std::string	separator;
 };
 
 #endif

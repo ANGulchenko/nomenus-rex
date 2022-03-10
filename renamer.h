@@ -20,7 +20,7 @@ public:
 	////////////////////
 	void	addDateRule(const std::string& format);
 	void	addTextRule(const std::string& text);
-	void	addDirRule();
+	void	addDirRule(RuleDir::Mode mode, const std::string& separator);
 	void	addIntegerRule(RuleInteger::Mode mode, int start, int step);
 	void	addExtensionRule();
 	////////////////////

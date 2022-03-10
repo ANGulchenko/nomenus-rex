@@ -1,5 +1,3 @@
-#include <libconfig.h++>
-
 #include "AnyOption/anyoption.h"
 #include "configurationparser.h"
 
@@ -58,7 +56,7 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 
 	// Parsing the config, creating the Rules objects and putting them into the array.
 
-	using namespace libconfig;
+
 
 	Config cfg;
 
@@ -115,7 +113,7 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 	//////////////////////////////////////////////////////////////////////////////
 
 	bool keep_dir_structure = false;
-	root.lookupValue("keep_dir_structure", keep_dir_structure);
+	getVar(root, "keep_dir_structure", keep_dir_structure);
 	renamer.setKeepDirStructure(keep_dir_structure);
 
 	//////////////////////////////////////////////////////////////////////////////
@@ -128,34 +126,40 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 	for(int i = 0; i < count; ++i)
 	{
 		const Setting &rule_raw = rules_raw[i];
-		rule_raw.lookupValue("type", rule_type);
-
+		getVar(rule_raw, "type", rule_type);
 
 		if (rule_type == "date")
 		{
 			std::string date_format;
-			bool var1_present = rule_raw.lookupValue("date_format", date_format);
-			if (!var1_present)
-			{
-				std::cerr << "There is no 'date_format' variable in the 'date' rule." << std::endl;
-				exit(EXIT_FAILURE);
-			}
+			getRuleVar(rule_raw, "date_format", rule_type, date_format);
 			renamer.addDateRule(date_format);
 		}else
 		if (rule_type == "text")
 		{
 			std::string text;
-			bool var1_present = rule_raw.lookupValue("text", text);
-			if (!var1_present)
-			{
-				std::cerr << "There is no 'text' variable in the 'text' rule." << std::endl;
-				exit(EXIT_FAILURE);
-			}
+			getRuleVar(rule_raw, "text", rule_type, text);
 			renamer.addTextRule(text);
 		}else
 		if (rule_type == "dir")
 		{
-			renamer.addDirRule();
+			std::string str_mode;
+			RuleDir::Mode mode = RuleDir::Mode::parent_only;
+			std::string separator;
+
+			getRuleVar(rule_raw, "mode", rule_type, str_mode);
+
+			if (str_mode == "whole path")
+			{
+				mode = RuleDir::Mode::whole;
+			}else
+			if (str_mode == "parent dir only")
+			{
+				mode = RuleDir::Mode::parent_only;
+			}
+
+			getRuleVar(rule_raw, "separator", rule_type, separator);
+
+			renamer.addDirRule(mode, separator);
 		}else
 		if (rule_type == "integer")
 		{
@@ -164,40 +168,20 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 			int  start;
 			int  step;
 
-			bool mode_present = rule_raw.lookupValue("mode", str_mode);
-			if (!mode_present)
+			getRuleVar(rule_raw, "mode", rule_type, str_mode);
+
+			if (str_mode == "global")
 			{
-				std::cerr << "There is no 'mode' variable in the 'integer' rule." << std::endl;
-				exit(EXIT_FAILURE);
+				mode = RuleInteger::Mode::global;
 			}else
+			if (str_mode == "local at every dir")
 			{
-				if (str_mode == "global")
-				{
-					mode = RuleInteger::Mode::global;
-				}else
-				if (str_mode == "local at every dir")
-				{
-					mode = RuleInteger::Mode::local_at_every_dir;
-				}
+				mode = RuleInteger::Mode::local_at_every_dir;
 			}
 
 
-			bool start_present = rule_raw.lookupValue("start", start);
-			if (!start_present)
-			{
-				std::cerr << "There is no 'start' variable in the 'integer' rule." << std::endl;
-				exit(EXIT_FAILURE);
-			}
-
-			bool step_present = rule_raw.lookupValue("step", step);
-			if (!step_present)
-			{
-				std::cerr << "There is no 'step' variable in the 'integer' rule." << std::endl;
-				exit(EXIT_FAILURE);
-			}
-
-
-
+			getRuleVar(rule_raw, "start", rule_type, start);
+			getRuleVar(rule_raw, "step", rule_type, step);
 
 			renamer.addIntegerRule(mode, start, step);
 		}else
