@@ -19,3 +19,4 @@ std::string	RuleBase::getString()
 	return result;
 }
 
+

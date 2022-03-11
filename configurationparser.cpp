@@ -116,6 +116,22 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 	getVar(root, "keep_dir_structure", keep_dir_structure);
 	renamer.setKeepDirStructure(keep_dir_structure);
 
+	std::string copy_or_rename_mode_str;
+	Renamer::CopyOrRename copy_or_rename_mode = Renamer::CopyOrRename::copy;
+
+	getVar(root, "copy_or_rename", copy_or_rename_mode_str);
+
+	if (copy_or_rename_mode_str == "copy")
+	{
+		copy_or_rename_mode = Renamer::CopyOrRename::copy;
+	}else
+	if (copy_or_rename_mode_str == "rename")
+	{
+		copy_or_rename_mode = Renamer::CopyOrRename::rename;
+	}
+
+	renamer.setCopyOrRename(copy_or_rename_mode);
+
 	//////////////////////////////////////////////////////////////////////////////
 
 	const Setting &rules_raw = root["rules"];
@@ -187,7 +203,27 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 		}else
 		if (rule_type == "extension")
 		{
-			renamer.addExtensionRule();
+			std::string str_mode;
+			RuleExtension::Mode mode = RuleExtension::Mode::sic;
+			std::string ext;
+
+			getRuleVar(rule_raw, "mode", rule_type, str_mode);
+			if (str_mode == "sic")
+			{
+				mode = RuleExtension::Mode::sic;
+			}else
+			if (str_mode == "lowercase")
+			{
+				mode = RuleExtension::Mode::lowercase;
+			}else
+			if (str_mode == "uppercase")
+			{
+				mode = RuleExtension::Mode::uppercase;
+			}
+
+			getRuleVar(rule_raw, "ext", rule_type, ext);
+
+			renamer.addExtensionRule(mode, ext);
 		}
 	}
 }

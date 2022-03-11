@@ -7,10 +7,12 @@
 class RuleExtension: public RuleBase
 {
 public:
-	RuleExtension(bool lower_case = true);
+	enum class Mode {lowercase, uppercase, sic};
+	RuleExtension(Mode _mode, std::string _ext);
 	void	process(std::filesystem::path& name);
 private:
-	bool lower_case;
+	Mode		mode;
+	std::string ext;
 };
 
 #endif

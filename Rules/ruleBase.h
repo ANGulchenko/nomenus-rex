@@ -8,8 +8,8 @@ enum class RuleType {Date, Text, Integer, Extension, Dir};
 class RuleBase
 {
 public:
-	explicit RuleBase(RuleType type);
-	RuleType getType();
+	explicit	RuleBase(RuleType type);
+	RuleType	getType();
 	std::string	getString();
 
 protected:

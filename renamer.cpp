@@ -27,6 +27,11 @@ void	Renamer::setKeepDirStructure(bool keep)
 	keep_dir_structure = keep;
 }
 
+void	Renamer::setCopyOrRename(CopyOrRename mode)
+{
+	copy_or_rename = mode;
+}
+
 
 ///////////////////
 
@@ -50,9 +55,9 @@ void	Renamer::addIntegerRule(RuleInteger::Mode mode, int start, int step)
 	rules.push_back(new RuleInteger(mode, start, step));
 }
 
-void	Renamer::addExtensionRule()
+void	Renamer::addExtensionRule(RuleExtension::Mode mode, const std::string& ext)
 {
-	rules.push_back(new RuleExtension());
+	rules.push_back(new RuleExtension(mode, ext));
 }
 
 
@@ -89,6 +94,7 @@ fs::path Renamer::applyRulesToOneRelativeFilename(fs::path relative_path)
 				new_filename += rule->getString();
 			}break;
 		}
+
 	}
 	return fs::path(new_filename);
 }
@@ -104,7 +110,15 @@ void Renamer::createRenameBijectionMap()
 
 			fs::path new_name = applyRulesToOneRelativeFilename(relative_file_path_source);
 
-			fs::path absolute_file_path_destination = destination_dir / new_name;
+			fs::path relative_file_path_without_filename = relative_file_path_source;
+			relative_file_path_without_filename.remove_filename();
+			fs::path absolute_file_path_destination = destination_dir;
+			if (keep_dir_structure)
+			{
+				absolute_file_path_destination /= relative_file_path_without_filename;
+			}
+			absolute_file_path_destination /= new_name;
+
 			rename_map[absolute_file_path_source] = absolute_file_path_destination;
 		}
 	}
@@ -127,16 +141,30 @@ std::map<fs::path /*source*/, fs::path /*destination*/>	Renamer::testRenameBijec
 
 void Renamer::executeRenameBijectionMap()
 {
-	for (auto& element: rename_map)
+	switch (copy_or_rename)
 	{
-		fs::copy(element.first, element.second);
+		case CopyOrRename::copy:
+		{
+			for (auto& element: rename_map)
+			{
+				fs::copy(element.first, element.second);
+			}
+		}break;
+		case CopyOrRename::rename:
+		{
+			for (auto& element: rename_map)
+			{
+				fs::rename(element.first, element.second);
+			}
+		}break;
 	}
+
 }
 
 void  Renamer::printRenameBijectionMap()
 {
 	for (auto& element: rename_map)
 	{
-		std::cout << element.first << "\n" << element.second << "\n =================\n";
+		std::cout << "╒════════════\n│" << element.first << "\n│" << element.second << "\n╘════════════\n";
 	}
 }

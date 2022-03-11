@@ -1,13 +1,38 @@
 #include "ruleExtension.h"
+#include <iostream>
+#include <algorithm>
 
-RuleExtension::RuleExtension(bool _lower_case)
+RuleExtension::RuleExtension(Mode _mode, std::string _ext)
 	: RuleBase(RuleType::Extension)
-	, lower_case(_lower_case)
+	, mode{_mode}
+	, ext {_ext}
 {
 
 }
 
 void	RuleExtension::process(std::filesystem::path& name)
 {
-	result = name.extension();
+	if (ext == "")
+	{
+		result = name.extension();
+	}else
+	{
+		result = ext;
+	}
+
+	switch (mode)
+	{
+		case Mode::lowercase:
+		{
+			std::transform(result.begin(), result.end(), result.begin(), ::tolower);
+		}break;
+		case Mode::uppercase:
+		{
+			std::transform(result.begin(), result.end(), result.begin(), ::toupper);
+		}break;
+		case Mode::sic:
+		{
+
+		}break;
+	}
 }
