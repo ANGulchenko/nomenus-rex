@@ -6,7 +6,6 @@
 #include <set>
 
 #include "renamer.h"
-#include "version.h"
 #include "configurationparser.h"
 
 
@@ -15,17 +14,24 @@ namespace fs = std::filesystem;
 
 int main(int argc, char *argv[])
 {
-	// report version
-	std::cout << "Version " << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH << std::endl;
-	std::cout << "Use -h or --help parameter for help." << std::endl;
-
 	Renamer renamer;
 	ConfigurationParser cfg_parser(argc, argv, renamer);
 
 	renamer.createRenameBijectionMap();
-	renamer.testRenameBijectionMap();
 	renamer.printRenameBijectionMap();
-	//renamer.executeRenameBijectionMap();
+	renamer.testRenameBijectionMap();
+
+	std::cout << "Press 'y' to process the files. Other button to cancel." << std::endl;
+	char approvement;
+	std::cin >> approvement;
+	if (approvement == 'y')
+	{
+		renamer.executeRenameBijectionMap();
+		std::cout << "The process is done." << std::endl;
+	}else
+	{
+		std::cout << "The process is canceled." << std::endl;
+	}
 
 
 	return 0;

@@ -1,5 +1,6 @@
 #include "AnyOption/anyoption.h"
 #include "configurationparser.h"
+#include "version.h"
 
 ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& renamer)
 {
@@ -8,14 +9,18 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 	std::string config;
 
 	AnyOption *opt = new AnyOption();
-	opt->addUsage("nomenus-rex usage: ");
+	// report version
+	std::string VERSION_TOTAL = std::to_string(VERSION_MAJOR)+"."+std::to_string(VERSION_MINOR)+"."+std::to_string(VERSION_PATCH);
+	std::string intro_line = "Nomenus-rex("+VERSION_TOTAL+") is a file mass-renaming utility.";
+	opt->addUsage(intro_line.c_str());
+	opt->addUsage("Parameters: ");
 	opt->addUsage("");
 	opt->addUsage(" -h  --help          Prints this help ");
 	opt->addUsage(" -s  --source        Source dir");
 	opt->addUsage(" -d  --destination   Destination dir");
 	opt->addUsage(" -c  --config        Configuration file");
 	opt->addUsage("");
-	opt->addUsage("Dirs can be also set up in the config file. CLI parameters have higher priority.");
+	opt->addUsage("Directories can be also set up in the config file. CLI parameters have higher priority.");
 
 	opt->setFlag("help", 'h');
 	opt->setCommandOption("source", 's');
@@ -46,17 +51,18 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 		}
 	}
 
-	delete opt;
+
 
 	if (config == "")
 	{
-		std::cerr << "No config file specified!" << std::endl;
+		std::cerr << "\nERROR: No config file is specified!" << std::endl;
+		opt->printUsage();
 		exit(EXIT_FAILURE);
 	}
 
+	delete opt;
+
 	// Parsing the config, creating the Rules objects and putting them into the array.
-
-
 
 	Config cfg;
 
@@ -90,7 +96,7 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 			source = {source_dir_cfg};
 		}else
 		{
-			std::cerr << "There is no 'Source_dir' neither in parameters nor in config file" << std::endl;
+			std::cerr << "\nERROR: There is no 'Source_dir' neither in parameters nor in config file" << std::endl;
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -103,7 +109,7 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 			destination = {destination_dir_cfg};
 		}else
 		{
-			std::cerr << "There is no 'Destination_dir' neither in parameters nor in config file" << std::endl;
+			std::cerr << "\nERROR: There is no 'Destination_dir' neither in parameters nor in config file" << std::endl;
 			exit(EXIT_FAILURE);
 		}
 	}

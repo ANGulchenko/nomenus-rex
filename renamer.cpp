@@ -5,21 +5,27 @@
 #include <libconfig.h++>
 
 Renamer::Renamer()
-	: keep_dir_structure(false)
+	: keep_dir_structure {false}
+	, copy_or_rename {CopyOrRename::copy}
 {
 
 }
 
 Renamer::~Renamer()
 {
+	for (RuleBase* rule: rules)
+	{
+		delete rule;
+	}
+
 	rules.clear();
 }
 
 ///////////////////
 void	Renamer::setPaths(const std::string& source, const std::string& destination)
 {
-	source_dir = {source};
-	destination_dir = {destination};
+	source_dir = source;
+	destination_dir = destination;
 }
 
 void	Renamer::setKeepDirStructure(bool keep)

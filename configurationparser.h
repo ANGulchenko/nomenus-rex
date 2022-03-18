@@ -22,7 +22,7 @@ private:
 		bool var_present = rule.lookupValue(var_name, var);
 		if (!var_present)
 		{
-			std::cerr << "There is no '" << var_name << "' variable in the '" << rule_name <<"' rule." << std::endl;
+			std::cerr << "\nERROR: There is no '" << var_name << "' variable in the '" << rule_name <<"' rule." << std::endl;
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -35,7 +35,7 @@ private:
 		bool var_present = rule.lookupValue(var_name, var);
 		if (!var_present)
 		{
-			std::cerr << "There is no '" << var_name << "' variable" << std::endl;
+			std::cerr << "\nERROR: There is no '" << var_name << "' variable" << std::endl;
 			exit(EXIT_FAILURE);
 		}
 	}
