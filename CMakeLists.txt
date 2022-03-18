@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.5)
 
 project(nomenus-rex
-        VERSION 0.1.0
-        HOMEPAGE_URL "https://"
-        DESCRIPTION "Nomenus-rex")
+        VERSION 0.2.0
+        HOMEPAGE_URL "https://github.com/ANGulchenko/nomenus-rex"
+        DESCRIPTION "Nomenus-rex is a CLI utility for the file mass-renaming.")
 
 configure_file(version.h.in version.h)
 

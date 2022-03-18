@@ -1,6 +1,6 @@
 ─────────────────┨ What is this? ┠─────────────────
 
-Nomenus-rex is a CLI utility for the file mass renaming.
+Nomenus-rex is a CLI utility for the file mass-renaming.
 
 ─────────────────┨   Installing  ┠─────────────────
 
@@ -12,7 +12,7 @@ make
 
 ─────────────────┨  How to use?  ┠─────────────────
 
-Nomenus-rex is a typical CLI (command line interface) utility and have such 
+Nomenus-rex is a typical CLI (command line interface) utility and has such 
 parameters:
 
  -h  --help          Prints short help
@@ -22,7 +22,7 @@ parameters:
  
 The only mandatory parameter is "-c"/"--config". Source and destination paths 
 can be omitted if they're present in the configuration file. If paths are set in
-the command line and in the confuguration file then command line data has higher 
+the command line and in the configuration file then command-line data has higher 
 priority.
 
 Here is an example of the configuration file (decorative borders aren't 
@@ -62,6 +62,7 @@ rules = (
         mode        = "local at every dir";
         start       = 0;
         step        = 1;
+        padding     = 5;
     },
     {   
         type        = "extension";
@@ -86,7 +87,7 @@ identical to the source.
 
 "rules" is an array of small templates, each of which is responsible for a particle
 of the resulting filename. These templates-rules are processed in the same order
-as they are disribed in the "rules" array. For example, the aforecited config
+as they are described in the "rules" array. For example, the aforecited config
 will copy 
 "/home/user/work/source/TestDir2/file2.txt" 
 to something like
@@ -102,11 +103,13 @@ Rules can be of this types:
                the file.
                Only works with subdirectories to the source directory.
   "integer"  : inserts the number which starts from "start" and iterates with
-               "step". 
+               "step".
+               "padding" dictates the length of the result: integer will be padded
+               with zeros.
                mode "global" uses one counter for all files.
                mode "local at every dir" uses separate counters for ever subdir.
-  "extension": inserts the file extension. By default it uses the file's
-               extension or you can privide your own extension through the "ext"
+  "extension": inserts the file extension. By default, it uses the file's
+               extension or you can provide your own extension through the "ext"
                variable.
                mode "lowercase" transforms the extension to lowercase.
                mode "uppercase" transforms the extension to uppercase.

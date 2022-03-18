@@ -56,9 +56,9 @@ void	Renamer::addDirRule(RuleDir::Mode mode, const std::string& separator)
 	rules.push_back(new RuleDir(mode, separator));
 }
 
-void	Renamer::addIntegerRule(RuleInteger::Mode mode, int start, int step)
+void	Renamer::addIntegerRule(RuleInteger::Mode mode, int start, int step, int padding)
 {
-	rules.push_back(new RuleInteger(mode, start, step));
+	rules.push_back(new RuleInteger(mode, start, step, padding));
 }
 
 void	Renamer::addExtensionRule(RuleExtension::Mode mode, const std::string& ext)
@@ -153,13 +153,19 @@ void Renamer::executeRenameBijectionMap()
 		{
 			for (auto& element: rename_map)
 			{
-				fs::copy(element.first, element.second);
+				fs::path dest_dir = element.second;
+				dest_dir.remove_filename();
+				fs::create_directories(dest_dir);
+				fs::copy(element.first, element.second, std::filesystem::copy_options::overwrite_existing);
 			}
 		}break;
 		case CopyOrRename::rename:
 		{
 			for (auto& element: rename_map)
 			{
+				fs::path dest_dir = element.second;
+				dest_dir.remove_filename();
+				fs::create_directories(dest_dir);
 				fs::rename(element.first, element.second);
 			}
 		}break;

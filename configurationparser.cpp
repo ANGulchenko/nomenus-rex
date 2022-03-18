@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "AnyOption/anyoption.h"
 #include "configurationparser.h"
 #include "version.h"
@@ -114,6 +116,15 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 		}
 	}
 
+	// replace ~ with a home dir path if needed
+
+	const char *home = getenv("HOME");
+	if (home)
+	{
+		source.replace(source.find("~"), 1, home);
+		destination.replace(destination.find("~"), 1, home);
+	}
+
 	renamer.setPaths(source, destination);
 
 	//////////////////////////////////////////////////////////////////////////////
@@ -189,6 +200,7 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 			RuleInteger::Mode mode = RuleInteger::Mode::global;
 			int  start;
 			int  step;
+			int	 padding;
 
 			getRuleVar(rule_raw, "mode", rule_type, str_mode);
 
@@ -204,8 +216,9 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 
 			getRuleVar(rule_raw, "start", rule_type, start);
 			getRuleVar(rule_raw, "step", rule_type, step);
+			getRuleVar(rule_raw, "padding", rule_type, padding);
 
-			renamer.addIntegerRule(mode, start, step);
+			renamer.addIntegerRule(mode, start, step, padding);
 		}else
 		if (rule_type == "extension")
 		{

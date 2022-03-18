@@ -23,7 +23,7 @@ public:
 	void	addDateRule(const std::string& format);
 	void	addTextRule(const std::string& text);
 	void	addDirRule(RuleDir::Mode mode, const std::string& separator);
-	void	addIntegerRule(RuleInteger::Mode mode, int start, int step);
+	void	addIntegerRule(RuleInteger::Mode mode, int start, int step, int padding);
 	void	addExtensionRule(RuleExtension::Mode mode, const std::string& ext);
 	////////////////////
 
