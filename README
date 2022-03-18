@@ -3,11 +3,11 @@
 Nomenus-rex is a CLI utility for the file mass-renaming.
 
 ─────────────────┨   Installing  ┠─────────────────
-You can download the souce from the GitHub:
+You can download the source from the GitHub:
 
 git clone https://github.com/ANGulchenko/nomenus-rex.git
 
-Nomenus-rex was created to be assembled with CMake, so just run these commands 
+Nomenus-rex was created to be assembled with CMake, so just run these commands
 from the directory with CMakeLists.txt:
 
 cmake ./
@@ -15,20 +15,20 @@ make
 
 ─────────────────┨  How to use?  ┠─────────────────
 
-Nomenus-rex is a typical CLI (command line interface) utility and has such 
+Nomenus-rex is a typical CLI (command line interface) utility and has such
 parameters:
 
  -h  --help          Prints short help
  -s  --source        sets the path to the source directory
  -d  --destination   sets the path to the destination directory
  -c  --config        sets the path to the configuration file
- 
-The only mandatory parameter is "-c"/"--config". Source and destination paths 
+
+The only mandatory parameter is "-c"/"--config". Source and destination paths
 can be omitted if they're present in the configuration file. If paths are set in
-the command line and in the configuration file then command-line data has higher 
+the command line and in the configuration file then command-line data has higher
 priority.
 
-Here is an example of the configuration file (decorative borders aren't 
+Here is an example of the configuration file (decorative borders aren't
 included):
 
 ─────────────────┨ Start config ┠─────────────────
@@ -39,27 +39,27 @@ destination_dir = "/home/user/work/destination";
 keep_dir_structure = false;
 copy_or_rename = "copy";
 
-rules = ( 
+rules = (
     {
         type        = "date";
         date_format = "%Y-%m-%d";
     },
-    {   
+    {
         type        = "text";
         text        = "_";
     },
-    {   
+    {
         type        = "dir";
         // mode     = "whole path"|"parent dir only"
         mode        = "whole path";
         separator   = "-";
-      
+
     },
-    {   
+    {
         type        = "text";
         text        = "_";
     },
-    {   
+    {
         type        = "integer";
         // mode     = "global"|"local at every dir"
         mode        = "local at every dir";
@@ -67,32 +67,32 @@ rules = (
         step        = 1;
         padding     = 5;
     },
-    {   
+    {
         type        = "extension";
         // leave the "text" variable empty to use an original extension
         ext         = "";
         // mode     = "lowercase"|"uppercase"|"sic";
         mode        = "lowercase";
-    } 
+    }
 );
 
 ─────────────────┨  End config  ┠─────────────────
 
-"Source/destination directories" are self-explanatory. You should make them 
+"Source/destination directories" are self-explanatory. You should make them
 identical if you want to rename files, but not copy or move.
 
 "keep_dir_structure" can be true or false. While "false", no subdirectories are
 created in the destination directory. "True" keeps the subdirectory structure
 identical to the source.
 
-"copy_or_rename" can be "copy" or "rename". In "copy" mode files are copying, in 
+"copy_or_rename" can be "copy" or "rename". In "copy" mode files are copying, in
 "rename" they are renaming or moving.
 
 "rules" is an array of small templates, each of which is responsible for a particle
 of the resulting filename. These templates-rules are processed in the same order
 as they are described in the "rules" array. For example, the aforecited config
-will copy 
-"/home/user/work/source/TestDir2/file2.txt" 
+will copy
+"/home/user/work/source/TestDir2/file2.txt"
 to something like
 "/home/user/work/destination/2022-03-16_TestDir2_0.txt"
 
@@ -102,7 +102,7 @@ Rules can be of this types:
   "text"     : just any text
   "dir"      : mode "whole path" inserts the whole path with subdirs separated
                with "separator".
-               mode "parent dir only" inserts only the nearest parent dir to 
+               mode "parent dir only" inserts only the nearest parent dir to
                the file.
                Only works with subdirectories to the source directory.
   "integer"  : inserts the number which starts from "start" and iterates with
@@ -117,7 +117,7 @@ Rules can be of this types:
                mode "lowercase" transforms the extension to lowercase.
                mode "uppercase" transforms the extension to uppercase.
                mode "sic" uses the original case.
-                
+
 
 
 
