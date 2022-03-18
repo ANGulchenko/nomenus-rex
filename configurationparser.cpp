@@ -121,8 +121,15 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 	const char *home = getenv("HOME");
 	if (home)
 	{
-		source.replace(source.find("~"), 1, home);
-		destination.replace(destination.find("~"), 1, home);
+		if (size_t tylda = source.find("~"); tylda != std::string::npos)
+		{
+			source.replace(tylda, 1, home);
+		}
+
+		if (size_t tylda = source.find("~"); tylda != std::string::npos)
+		{
+			destination.replace(tylda, 1, home);
+		}
 	}
 
 	renamer.setPaths(source, destination);

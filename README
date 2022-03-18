@@ -3,6 +3,9 @@
 Nomenus-rex is a CLI utility for the file mass-renaming.
 
 ─────────────────┨   Installing  ┠─────────────────
+You can download the souce from the GitHub:
+
+git clone https://github.com/ANGulchenko/nomenus-rex.git
 
 Nomenus-rex was created to be assembled with CMake, so just run these commands 
 from the directory with CMakeLists.txt:
