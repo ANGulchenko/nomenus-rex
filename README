@@ -27,6 +27,11 @@ The only mandatory parameter is "-c"/"--config". Source and destination paths
 can be omitted if they're present in the configuration file. If paths are set in
 the command line and in the configuration file then command-line data has higher
 priority.
+It is possible to use "~" char if you have a "HOME" environment variable set
+in your system. Also you can omit the full path to the config file. In this case
+the config would be searched in XDG_CONFIG_HOME/nomenus-rex/ directory or
+(in the case of the absense of XDG_CONFIG_HOME environment variable) in the
+HOME/.config/nomenus-rex/
 
 Here is an example of the configuration file (decorative borders aren't
 included):
@@ -79,7 +84,8 @@ rules = (
 ─────────────────┨  End config  ┠─────────────────
 
 "Source/destination directories" are self-explanatory. You should make them
-identical if you want to rename files, but not copy or move.
+identical if you want to rename files, but not copy or move. It is possible
+to use "~" char if you have a "HOME" environment variable set in your system.
 
 "keep_dir_structure" can be true or false. While "false", no subdirectories are
 created in the destination directory. "True" keeps the subdirectory structure

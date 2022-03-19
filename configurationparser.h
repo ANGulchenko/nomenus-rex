@@ -2,6 +2,7 @@
 #define CONFIGURATIONPARSER_H
 
 #include <iostream>
+#include <filesystem>
 #include "renamer.h"
 #include <libconfig.h++>
 
@@ -39,6 +40,9 @@ private:
 			exit(EXIT_FAILURE);
 		}
 	}
+
+	void		makeSureThatConfigDirIsExist();
+	std::string	getConfigPathString(std::string raw_parameter);
 };
 
 #endif // CONFIGURATIONPARSER_H

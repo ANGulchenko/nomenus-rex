@@ -62,10 +62,12 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 		exit(EXIT_FAILURE);
 	}
 
+	config = getConfigPathString(config);
+
 	delete opt;
 
 	// Parsing the config, creating the Rules objects and putting them into the array.
-
+	makeSureThatConfigDirIsExist();
 	Config cfg;
 
 	try
@@ -119,6 +121,7 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 	// replace ~ with a home dir path if needed
 
 	const char *home = getenv("HOME");
+
 	if (home)
 	{
 		if (size_t tylda = source.find("~"); tylda != std::string::npos)
@@ -252,4 +255,81 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 			renamer.addExtensionRule(mode, ext);
 		}
 	}
+}
+
+void		ConfigurationParser::makeSureThatConfigDirIsExist()
+{
+	if (const char *xdg_config_path = getenv("XDG_CONFIG_HOME"); xdg_config_path)
+	{
+		std::string config_dir = {xdg_config_path};
+		config_dir += "/nomenus-rex/";
+		fs::create_directories(config_dir);
+	}else
+	if (const char *home_path = getenv("HOME"); home_path)
+	{
+		std::string config_dir = {home_path};
+		config_dir += "/.config/nomenus-rex/";
+		fs::create_directories(config_dir);
+	}
+}
+
+std::string	ConfigurationParser::getConfigPathString(std::string raw_parameter)
+{
+	// User might give the path to config with a ~ sign.
+	const char *home = getenv("HOME");
+	if (home)
+	{
+		if (size_t tylda = raw_parameter.find("~"); tylda != std::string::npos)
+		{
+			raw_parameter.replace(tylda, 1, home);
+		}
+	}
+
+	// We should check if the user's data is a valid path to the config.
+	// If not, we should try to assemble something with XDG_CONFIG_HOME/HOME
+	if (std::filesystem::exists(std::filesystem::path(raw_parameter)))
+	{
+		std::cerr << "NOTIFICATION: Using " << raw_parameter << " config file" << std::endl;
+		return raw_parameter;
+	}else
+	{
+		std::cerr << "ERROR: Config file " << raw_parameter << " doesn't exist" << std::endl;
+	}
+
+
+	//Nah, there isn't such file.
+	//Let's try with XDG_CONFIG_HOME
+
+
+	const char *xdg_home = getenv("XDG_CONFIG_HOME");
+	if (xdg_home)
+	{
+		const std::string xdg_name = std::string(xdg_home) + std::string("/nomenus-rex/") + raw_parameter;
+		if (std::filesystem::exists(std::filesystem::path(xdg_name)))
+		{
+			std::cerr << "NOTIFICATION: Using " << xdg_name << " config file" << std::endl;
+			return xdg_name;
+		}else
+		{
+			std::cerr << "ERROR: Config file " << xdg_name << " doesn't exist" << std::endl;
+		}
+	}
+
+	// No luck with XDG_CONFIG_HOME. Let's try HOME
+	if (home)
+	{
+		std::string home_name = std::string(home) + std::string("/.config/nomenus-rex/") + raw_parameter;
+		if (std::filesystem::exists(std::filesystem::path(home_name)))
+		{
+			std::cerr << "NOTIFICATION: Using " << home_name << " config file" << std::endl;
+			return home_name;
+		}else
+		{
+			// No. Just no. We have nowehere elese to look for that file.
+			std::cerr << "ERROR: Config file " << home_name << " doesn't exist" << std::endl;
+			std::cerr << "Nowhere else to search for config. Halting." << std::endl;
+			exit(EXIT_FAILURE);
+		}
+	}
+
 }
