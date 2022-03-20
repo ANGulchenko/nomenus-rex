@@ -29,7 +29,7 @@ public:
 
 	fs::path applyRulesToOneRelativeFilename(fs::path relative_path);
 	void createRenameBijectionMap();
-	std::map<fs::path /*source*/, fs::path /*destination*/>	testRenameBijectionMap();
+	void testRenameBijectionMap();
 	void executeRenameBijectionMap();
 	void printRenameBijectionMap();
 

@@ -130,19 +130,37 @@ void Renamer::createRenameBijectionMap()
 	}
 }
 
-std::map<fs::path /*source*/, fs::path /*destination*/>	Renamer::testRenameBijectionMap()
+void Renamer::testRenameBijectionMap()
 {
-	std::set<fs::path> unique_check;
-	for (auto& element: rename_map)
+	std::map<fs::path, fs::path> result;
+	auto starting_point = rename_map.begin();
+	auto runner = starting_point;
+	while (starting_point != rename_map.end())
 	{
-		unique_check.insert(element.second);
+		runner = starting_point;
+		runner++;
+		while (runner != rename_map.end())
+		{
+			if ((*runner).second == (*starting_point).second)
+			{
+				result[(*runner).first] = (*runner).second;
+			}
+			runner++;
+		}
+
+		starting_point++;
 	}
-	if (rename_map.size() != unique_check.size())
+
+	if (result.size() > 0)
 	{
-		exit(-1);
+		std::cerr << "ERROR: Filenames collision." << std::endl;
+		for (auto& element: result)
+		{
+			std::cout << "╒════════════\n│" << element.first << "\n│" << element.second << "\n╘════════════\n";
+		}
+		exit(EXIT_FAILURE);
 	}
-	std::map<fs::path /*source*/, fs::path /*destination*/> result;
-	return result;
+
 }
 
 void Renamer::executeRenameBijectionMap()

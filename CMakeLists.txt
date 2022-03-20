@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 project(nomenus-rex
-        VERSION 0.2.1
+        VERSION 0.2.2
         HOMEPAGE_URL "https://github.com/ANGulchenko/nomenus-rex"
         DESCRIPTION "Nomenus-rex is a CLI utility for the file mass-renaming.")
 
