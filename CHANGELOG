@@ -1,0 +1,4 @@
+─────────────────┨ 0.3.0 ┠─────────────────
+New "rule": filename. Just an original filename without an extension.
+
+Readme fix: text->ext typo.
