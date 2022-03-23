@@ -73,8 +73,13 @@ rules = (
         padding     = 5;
     },
     {
+        type        = "filename";
+        // mode     = "lowercase"|"uppercase"|"sic";
+        mode        = "lowercase";
+    },
+    {
         type        = "extension";
-        // leave the "text" variable empty to use an original extension
+        // leave the "ext" variable empty to use an original extension
         ext         = "";
         // mode     = "lowercase"|"uppercase"|"sic";
         mode        = "lowercase";
@@ -105,23 +110,31 @@ to something like
 Rules can be of this types:
 
   "date"     : date_format is the same as in STRFTIME(3)
+
   "text"     : just any text
+
   "dir"      : mode "whole path" inserts the whole path with subdirs separated
                with "separator".
                mode "parent dir only" inserts only the nearest parent dir to
                the file.
                Only works with subdirectories to the source directory.
+
   "integer"  : inserts the number which starts from "start" and iterates with
                "step".
                "padding" dictates the length of the result: integer will be padded
                with zeros.
                mode "global" uses one counter for all files.
                mode "local at every dir" uses separate counters for ever subdir.
+
   "extension": inserts the file extension. By default, it uses the file's
                extension or you can provide your own extension through the "ext"
                variable.
                mode "lowercase" transforms the extension to lowercase.
                mode "uppercase" transforms the extension to uppercase.
+               mode "sic" uses the original case.
+
+  "filename" : mode "lowercase" transforms the filename to lowercase.
+               mode "uppercase" transforms the filename to uppercase.
                mode "sic" uses the original case.
 
 

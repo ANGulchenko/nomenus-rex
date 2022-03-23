@@ -25,6 +25,7 @@ public:
 	void	addDirRule(RuleDir::Mode mode, const std::string& separator);
 	void	addIntegerRule(RuleInteger::Mode mode, int start, int step, int padding);
 	void	addExtensionRule(RuleExtension::Mode mode, const std::string& ext);
+	void	addFilenameRule(RuleFilename::Mode mode);
 	////////////////////
 
 	fs::path applyRulesToOneRelativeFilename(fs::path relative_path);

@@ -23,6 +23,7 @@ ADD_LIBRARY(Rules STATIC
     Rules/ruleInteger.cpp   Rules/ruleInteger.h
     Rules/ruleExtension.cpp Rules/ruleExtension.h
     Rules/ruleDir.cpp       Rules/ruleDir.h
+    Rules/ruleFilename.cpp  Rules/ruleFilename.h
 )
 
 add_executable (nomenus-rex

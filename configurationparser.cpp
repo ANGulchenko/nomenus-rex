@@ -253,6 +253,28 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 			getRuleVar(rule_raw, "ext", rule_type, ext);
 
 			renamer.addExtensionRule(mode, ext);
+		}else
+		if (rule_type == "filename")
+		{
+			std::string str_mode;
+			RuleFilename::Mode mode = RuleFilename::Mode::sic;
+			std::string ext;
+
+			getRuleVar(rule_raw, "mode", rule_type, str_mode);
+			if (str_mode == "sic")
+			{
+				mode = RuleFilename::Mode::sic;
+			}else
+			if (str_mode == "lowercase")
+			{
+				mode = RuleFilename::Mode::lowercase;
+			}else
+			if (str_mode == "uppercase")
+			{
+				mode = RuleFilename::Mode::uppercase;
+			}
+
+			renamer.addFilenameRule(mode);
 		}
 	}
 }
@@ -332,4 +354,5 @@ std::string	ConfigurationParser::getConfigPathString(std::string raw_parameter)
 		}
 	}
 
+	return raw_parameter;
 }

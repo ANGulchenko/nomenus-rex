@@ -6,5 +6,6 @@
 #include "ruleInteger.h"
 #include "ruleExtension.h"
 #include "ruleDir.h"
+#include "ruleFilename.h"
 
 #endif // RULES_H

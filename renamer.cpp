@@ -66,6 +66,11 @@ void	Renamer::addExtensionRule(RuleExtension::Mode mode, const std::string& ext)
 	rules.push_back(new RuleExtension(mode, ext));
 }
 
+void	Renamer::addFilenameRule(RuleFilename::Mode mode)
+{
+	rules.push_back(new RuleFilename(mode));
+}
+
 
 fs::path Renamer::applyRulesToOneRelativeFilename(fs::path relative_path)
 {
@@ -97,6 +102,11 @@ fs::path Renamer::applyRulesToOneRelativeFilename(fs::path relative_path)
 			case RuleType::Extension:
 			{
 				static_cast<RuleExtension*>(rule)->process(relative_path);
+				new_filename += rule->getString();
+			}break;
+			case RuleType::Filename:
+			{
+				static_cast<RuleFilename*>(rule)->process(relative_path);
 				new_filename += rule->getString();
 			}break;
 		}
