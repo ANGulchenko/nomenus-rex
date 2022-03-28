@@ -7,5 +7,6 @@
 #include "ruleExtension.h"
 #include "ruleDir.h"
 #include "ruleFilename.h"
+#include "ruleFilesize.h"
 
 #endif // RULES_H

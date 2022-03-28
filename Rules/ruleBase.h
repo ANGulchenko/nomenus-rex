@@ -3,7 +3,7 @@
 
 #include <string>
 
-enum class RuleType {Date, Text, Integer, Extension, Dir, Filename};
+enum class RuleType {Date, Text, Integer, Extension, Dir, Filename, Filesize};
 
 class RuleBase
 {

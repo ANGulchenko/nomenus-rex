@@ -275,6 +275,24 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 			}
 
 			renamer.addFilenameRule(mode);
+		}else
+		if (rule_type == "filesize")
+		{
+			std::string str_dimension;
+			RuleFilesize::Dimension dimension = RuleFilesize::Dimension::KiB;
+			std::string decimal_separator;
+			bool show_dimension;
+
+			getRuleVar(rule_raw, "dimension", rule_type, str_dimension);
+			if (str_dimension == "B")	{dimension = RuleFilesize::Dimension::B;}else
+			if (str_dimension == "KiB")	{dimension = RuleFilesize::Dimension::KiB;}else
+			if (str_dimension == "MiB")	{dimension = RuleFilesize::Dimension::MiB;}else
+			if (str_dimension == "GiB")	{dimension = RuleFilesize::Dimension::GiB;}
+
+			getRuleVar(rule_raw, "decimal_separator", rule_type, decimal_separator);
+			getRuleVar(rule_raw, "show_dimension", rule_type, show_dimension);
+
+			renamer.addFilesizeRule(dimension, show_dimension, decimal_separator);
 		}
 	}
 }

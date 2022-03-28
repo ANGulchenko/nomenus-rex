@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 project(nomenus-rex
-        VERSION 0.2.2
+        VERSION 0.3.0
         HOMEPAGE_URL "https://github.com/ANGulchenko/nomenus-rex"
         DESCRIPTION "Nomenus-rex is a CLI utility for the file mass-renaming.")
 
@@ -10,6 +10,11 @@ configure_file(version.h.in version.h)
 set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+add_custom_target(Docs SOURCES
+    CHANGELOG
+    README
+)
 
 ADD_LIBRARY(AnyOption STATIC
     AnyOption/anyoption.cpp AnyOption/anyoption.h
@@ -24,6 +29,7 @@ ADD_LIBRARY(Rules STATIC
     Rules/ruleExtension.cpp Rules/ruleExtension.h
     Rules/ruleDir.cpp       Rules/ruleDir.h
     Rules/ruleFilename.cpp  Rules/ruleFilename.h
+    Rules/ruleFilesize.cpp  Rules/ruleFilesize.h
 )
 
 add_executable (nomenus-rex

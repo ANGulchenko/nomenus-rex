@@ -71,8 +71,14 @@ void	Renamer::addFilenameRule(RuleFilename::Mode mode)
 	rules.push_back(new RuleFilename(mode));
 }
 
+void	Renamer::addFilesizeRule(RuleFilesize::Dimension dimention, bool show_dimention, const std::string& decimal_separator)
+{
+	rules.push_back(new RuleFilesize(dimention, decimal_separator, show_dimention));
+}
 
-fs::path Renamer::applyRulesToOneRelativeFilename(fs::path relative_path)
+
+
+fs::path Renamer::applyRulesToOneRelativeFilename(fs::path absolute_path, fs::path relative_path)
 {
 	std::string new_filename;
 
@@ -109,6 +115,11 @@ fs::path Renamer::applyRulesToOneRelativeFilename(fs::path relative_path)
 				static_cast<RuleFilename*>(rule)->process(relative_path);
 				new_filename += rule->getString();
 			}break;
+			case RuleType::Filesize:
+			{
+				static_cast<RuleFilesize*>(rule)->process(absolute_path);
+				new_filename += rule->getString();
+			}break;
 		}
 
 	}
@@ -124,7 +135,7 @@ void Renamer::createRenameBijectionMap()
 			fs::path absolute_file_path_source = dir_entry.path();
 			fs::path relative_file_path_source = fs::relative(absolute_file_path_source, source_dir);
 
-			fs::path new_name = applyRulesToOneRelativeFilename(relative_file_path_source);
+			fs::path new_name = applyRulesToOneRelativeFilename(absolute_file_path_source, relative_file_path_source);
 
 			fs::path relative_file_path_without_filename = relative_file_path_source;
 			relative_file_path_without_filename.remove_filename();

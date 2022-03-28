@@ -72,11 +72,18 @@ rules = (
         step        = 1;
         padding     = 5;
     },
-    {
+    /*{
         type        = "filename";
         // mode     = "lowercase"|"uppercase"|"sic";
         mode        = "lowercase";
-    },
+    },*/
+    /*{   
+        type              = "filesize";
+        // dimension      = "B"|"KiB"|"MiB"|"GiB"
+        dimension         = "KiB";
+        show_dimension    = true;
+        decimal_separator = ",";
+    },*/
     {
         type        = "extension";
         // leave the "ext" variable empty to use an original extension
@@ -87,6 +94,11 @@ rules = (
 );
 
 ─────────────────┨  End config  ┠─────────────────
+
+// is a single-line comment.
+/*
+  Multi-line comment.
+*/
 
 "Source/destination directories" are self-explanatory. You should make them
 identical if you want to rename files, but not copy or move. It is possible
@@ -136,8 +148,10 @@ Rules can be of this types:
   "filename" : mode "lowercase" transforms the filename to lowercase.
                mode "uppercase" transforms the filename to uppercase.
                mode "sic" uses the original case.
-
-
-
-
-
+               
+  "filesize" : the "dimenssion" can be "B","KiB","MiB", or "GiB".
+               the dimension can be hidden with a help of "show_dimension" var.
+               you can set any decimal separator. Dot wasn't a good idea because
+               of messing with file's extension.
+               
+               

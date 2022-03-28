@@ -26,9 +26,10 @@ public:
 	void	addIntegerRule(RuleInteger::Mode mode, int start, int step, int padding);
 	void	addExtensionRule(RuleExtension::Mode mode, const std::string& ext);
 	void	addFilenameRule(RuleFilename::Mode mode);
+	void	addFilesizeRule(RuleFilesize::Dimension dimention, bool show_dimention, const std::string& decimal_separator);
 	////////////////////
 
-	fs::path applyRulesToOneRelativeFilename(fs::path relative_path);
+	fs::path applyRulesToOneRelativeFilename(fs::path absolute_path, fs::path relative_path);
 	void createRenameBijectionMap();
 	void testRenameBijectionMap();
 	void executeRenameBijectionMap();
