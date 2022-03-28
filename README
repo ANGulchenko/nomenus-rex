@@ -77,7 +77,7 @@ rules = (
         // mode     = "lowercase"|"uppercase"|"sic";
         mode        = "lowercase";
     },*/
-    /*{   
+    /*{
         type              = "filesize";
         // dimension      = "B"|"KiB"|"MiB"|"GiB"
         dimension         = "KiB";
@@ -148,10 +148,10 @@ Rules can be of this types:
   "filename" : mode "lowercase" transforms the filename to lowercase.
                mode "uppercase" transforms the filename to uppercase.
                mode "sic" uses the original case.
-               
-  "filesize" : the "dimenssion" can be "B","KiB","MiB", or "GiB".
+
+  "filesize" : the "dimension" can be "B","KiB","MiB", or "GiB".
                the dimension can be hidden with a help of "show_dimension" var.
-               you can set any decimal separator. Dot wasn't a good idea because
-               of messing with file's extension.
-               
-               
+               you can set any decimal separator. The dot wasn't a good idea because
+               of the messing with file's extension.
+
+
