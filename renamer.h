@@ -27,6 +27,7 @@ public:
 	void	addExtensionRule(RuleExtension::Mode mode, const std::string& ext);
 	void	addFilenameRule(RuleFilename::Mode mode);
 	void	addFilesizeRule(RuleFilesize::Dimension dimention, bool show_dimention, const std::string& decimal_separator);
+	void	addReplaceRule(const std::string& what, const std::string& to);
 	////////////////////
 
 	fs::path applyRulesToOneRelativeFilename(fs::path absolute_path, fs::path relative_path);

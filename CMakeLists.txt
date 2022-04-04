@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 project(nomenus-rex
-        VERSION 0.3.0
+        VERSION 0.4.0
         HOMEPAGE_URL "https://github.com/ANGulchenko/nomenus-rex"
         DESCRIPTION "Nomenus-rex is a CLI utility for the file mass-renaming.")
 
@@ -22,14 +22,19 @@ ADD_LIBRARY(AnyOption STATIC
 
 ADD_LIBRARY(Rules STATIC
     Rules/rules.h
-    Rules/ruleBase.cpp      Rules/ruleBase.h
-    Rules/ruleDate.cpp      Rules/ruleDate.h
-    Rules/ruleText.cpp      Rules/ruleText.h
-    Rules/ruleInteger.cpp   Rules/ruleInteger.h
-    Rules/ruleExtension.cpp Rules/ruleExtension.h
-    Rules/ruleDir.cpp       Rules/ruleDir.h
-    Rules/ruleFilename.cpp  Rules/ruleFilename.h
-    Rules/ruleFilesize.cpp  Rules/ruleFilesize.h
+    Rules/ruleBase.cpp          Rules/ruleBase.h
+    Rules/ruleDate.cpp          Rules/ruleDate.h
+    Rules/ruleText.cpp          Rules/ruleText.h
+    Rules/ruleInteger.cpp       Rules/ruleInteger.h
+    Rules/ruleExtension.cpp     Rules/ruleExtension.h
+    Rules/ruleDir.cpp           Rules/ruleDir.h
+    Rules/ruleFilename.cpp      Rules/ruleFilename.h
+    Rules/ruleFilesize.cpp      Rules/ruleFilesize.h
+    Rules/ruleReplace.cpp       Rules/ruleReplace.h
+)
+
+ADD_LIBRARY(Tests STATIC
+    Tests/tests.cpp Tests/tests.h
 )
 
 add_executable (nomenus-rex
@@ -40,6 +45,7 @@ add_executable (nomenus-rex
 
 target_link_libraries(nomenus-rex AnyOption)
 target_link_libraries(nomenus-rex Rules)
+target_link_libraries(nomenus-rex Tests)
 target_link_libraries(nomenus-rex config++)
 
 target_include_directories(nomenus-rex PUBLIC

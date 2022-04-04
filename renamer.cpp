@@ -2,7 +2,8 @@
 
 #include <set>
 #include <iostream>
-#include <libconfig.h++>
+//#include <libconfig.h++>
+#include <algorithm>
 
 Renamer::Renamer()
 	: keep_dir_structure {false}
@@ -76,6 +77,11 @@ void	Renamer::addFilesizeRule(RuleFilesize::Dimension dimention, bool show_dimen
 	rules.push_back(new RuleFilesize(dimention, decimal_separator, show_dimention));
 }
 
+void	Renamer::addReplaceRule(const std::string& what, const std::string& to)
+{
+	rules.push_back(new RuleReplace(what, to));
+}
+
 
 
 fs::path Renamer::applyRulesToOneRelativeFilename(fs::path absolute_path, fs::path relative_path)
@@ -120,6 +126,11 @@ fs::path Renamer::applyRulesToOneRelativeFilename(fs::path absolute_path, fs::pa
 				static_cast<RuleFilesize*>(rule)->process(absolute_path);
 				new_filename += rule->getString();
 			}break;
+			case RuleType::Replace:
+			{
+				static_cast<RuleReplace*>(rule)->process(new_filename);
+				//new_filename += rule->getString();
+			}break;
 		}
 
 	}
@@ -128,11 +139,18 @@ fs::path Renamer::applyRulesToOneRelativeFilename(fs::path absolute_path, fs::pa
 
 void Renamer::createRenameBijectionMap()
 {
-	for (const fs::directory_entry& dir_entry : fs::recursive_directory_iterator(source_dir))
+	// We want some sorting first
+	std::vector<std::filesystem::path> files_in_directory;
+	std::copy(std::filesystem::recursive_directory_iterator(source_dir), std::filesystem::recursive_directory_iterator(), std::back_inserter(files_in_directory));
+	std::sort(files_in_directory.begin(), files_in_directory.end());
+
+
+
+	for (const std::filesystem::path& dir_entry : files_in_directory)
 	{
-		if (dir_entry.is_regular_file())
+		if (!std::filesystem::is_directory(dir_entry))
 		{
-			fs::path absolute_file_path_source = dir_entry.path();
+			fs::path absolute_file_path_source = dir_entry;
 			fs::path relative_file_path_source = fs::relative(absolute_file_path_source, source_dir);
 
 			fs::path new_name = applyRulesToOneRelativeFilename(absolute_file_path_source, relative_file_path_source);

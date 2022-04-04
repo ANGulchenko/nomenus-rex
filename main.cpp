@@ -7,6 +7,7 @@
 
 #include "renamer.h"
 #include "configurationparser.h"
+#include "Tests/tests.h"
 
 
 namespace fs = std::filesystem;
@@ -14,6 +15,8 @@ namespace fs = std::filesystem;
 
 int main(int argc, char *argv[])
 {
+	//tests();
+
 	Renamer renamer;
 	ConfigurationParser cfg_parser(argc, argv, renamer);
 

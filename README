@@ -72,18 +72,6 @@ rules = (
         step        = 1;
         padding     = 5;
     },
-    /*{
-        type        = "filename";
-        // mode     = "lowercase"|"uppercase"|"sic";
-        mode        = "lowercase";
-    },*/
-    /*{
-        type              = "filesize";
-        // dimension      = "B"|"KiB"|"MiB"|"GiB"
-        dimension         = "KiB";
-        show_dimension    = true;
-        decimal_separator = ",";
-    },*/
     {
         type        = "extension";
         // leave the "ext" variable empty to use an original extension
@@ -122,14 +110,31 @@ to something like
 Rules can be of this types:
 
   "date"     : date_format is the same as in STRFTIME(3)
+             ────┨  Example  ┠────────────────
+             {
+                 type        = "date";
+                 date_format = "%Y-%m-%d";
+             }
 
   "text"     : just any text
+             ────┨  Example  ┠────────────────
+             {
+                 type        = "text";
+                 text        = "_";
+             }
 
   "dir"      : mode "whole path" inserts the whole path with subdirs separated
                with "separator".
                mode "parent dir only" inserts only the nearest parent dir to
                the file.
                Only works with subdirectories to the source directory.
+              ────┨  Example  ┠────────────────
+              {
+                  type        = "dir";
+                  // mode     = "whole path"|"parent dir only"
+                  mode        = "whole path";
+                  separator   = "-";
+              }
 
   "integer"  : inserts the number which starts from "start" and iterates with
                "step".
@@ -137,6 +142,15 @@ Rules can be of this types:
                with zeros.
                mode "global" uses one counter for all files.
                mode "local at every dir" uses separate counters for ever subdir.
+               ────┨  Example  ┠────────────────
+               {
+                   type        = "integer";
+                   // mode     = "global"|"local at every dir"
+                   mode        = "local at every dir";
+                   start       = 0;
+                   step        = 1;
+                   padding     = 5;
+               }
 
   "extension": inserts the file extension. By default, it uses the file's
                extension or you can provide your own extension through the "ext"
@@ -144,14 +158,50 @@ Rules can be of this types:
                mode "lowercase" transforms the extension to lowercase.
                mode "uppercase" transforms the extension to uppercase.
                mode "sic" uses the original case.
+               ────┨  Example  ┠────────────────
+               {
+                   type        = "extension";
+                   // leave the "ext" variable empty to use an original extension
+                   ext         = "";
+                   // mode     = "lowercase"|"uppercase"|"sic";
+                   mode        = "lowercase";
+               }
 
   "filename" : mode "lowercase" transforms the filename to lowercase.
                mode "uppercase" transforms the filename to uppercase.
                mode "sic" uses the original case.
+               ────┨  Example  ┠────────────────
+               {
+                   type        = "filename";
+                   // mode     = "lowercase"|"uppercase"|"sic";
+                   mode        = "lowercase";
+               }
 
   "filesize" : the "dimension" can be "B","KiB","MiB", or "GiB".
                the dimension can be hidden with a help of "show_dimension" var.
                you can set any decimal separator. The dot wasn't a good idea because
                of the messing with file's extension.
+               ────┨  Example  ┠────────────────
+               {
+                   type              = "filesize";
+                   // dimension      = "B"|"KiB"|"MiB"|"GiB"
+                   dimension         = "KiB";
+                   show_dimension    = true;
+                   decimal_separator = ",";
+               }
+
+  "replace"  : replaces all occurences of "what" substring to "to" substring.
+               The replacement occurs in the current generating filename. For
+               example, if you want to rename a "BlaBla001.txt" to "Ololo001.txt"
+               you can use a "filename" rule first to set the current precessing
+               filename into the "BlaBla001.txt", then use replace rule with
+               what="BlaBla" and to="Ololo" parameters and don't forget about
+               extension rule in the end.
+               ────┨  Example  ┠────────────────
+               {
+                   type        = "replace";
+                   what        = "BlaBla";
+                   to          = "Ololo";
+               }
 
 

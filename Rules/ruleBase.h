@@ -3,13 +3,14 @@
 
 #include <string>
 
-enum class RuleType {Date, Text, Integer, Extension, Dir, Filename, Filesize};
+enum class RuleType {Date, Text, Integer, Extension, Dir, Filename, Filesize, Replace};
 
 class RuleBase
 {
 public:
 	explicit	RuleBase(RuleType type);
 	RuleType	getType();
+	std::string getTypeStr();
 	std::string	getString();
 
 protected:

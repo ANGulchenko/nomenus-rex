@@ -143,19 +143,12 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 	getVar(root, "keep_dir_structure", keep_dir_structure);
 	renamer.setKeepDirStructure(keep_dir_structure);
 
-	std::string copy_or_rename_mode_str;
-	Renamer::CopyOrRename copy_or_rename_mode = Renamer::CopyOrRename::copy;
-
-	getVar(root, "copy_or_rename", copy_or_rename_mode_str);
-
-	if (copy_or_rename_mode_str == "copy")
-	{
-		copy_or_rename_mode = Renamer::CopyOrRename::copy;
-	}else
-	if (copy_or_rename_mode_str == "rename")
-	{
-		copy_or_rename_mode = Renamer::CopyOrRename::rename;
-	}
+	Renamer::CopyOrRename copy_or_rename_mode =
+			enumParser(root, "Config root", "copy_or_rename", Renamer::CopyOrRename::copy,
+					   {
+						 {"copy", Renamer::CopyOrRename::copy},
+						 {"rename", Renamer::CopyOrRename::rename}
+					   });
 
 	renamer.setCopyOrRename(copy_or_rename_mode);
 
@@ -171,128 +164,119 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 		const Setting &rule_raw = rules_raw[i];
 		getVar(rule_raw, "type", rule_type);
 
+		////////////////////////////////////////////////////////////////////////
 		if (rule_type == "date")
 		{
 			std::string date_format;
 			getRuleVar(rule_raw, "date_format", rule_type, date_format);
 			renamer.addDateRule(date_format);
-		}else
+		}
+		/////////////////////////////////////////////////////////////////////////
+		else
 		if (rule_type == "text")
 		{
 			std::string text;
 			getRuleVar(rule_raw, "text", rule_type, text);
 			renamer.addTextRule(text);
-		}else
+		}
+		/////////////////////////////////////////////////////////////////////////
+		else
 		if (rule_type == "dir")
 		{
-			std::string str_mode;
-			RuleDir::Mode mode = RuleDir::Mode::parent_only;
+			RuleDir::Mode mode =
+				enumParser(rule_raw, rule_type, "mode", RuleDir::Mode::parent_only,
+				   {
+					 {"whole path", RuleDir::Mode::whole},
+					 {"parent dir only", RuleDir::Mode::parent_only}
+				   });
+
 			std::string separator;
-
-			getRuleVar(rule_raw, "mode", rule_type, str_mode);
-
-			if (str_mode == "whole path")
-			{
-				mode = RuleDir::Mode::whole;
-			}else
-			if (str_mode == "parent dir only")
-			{
-				mode = RuleDir::Mode::parent_only;
-			}
-
 			getRuleVar(rule_raw, "separator", rule_type, separator);
 
 			renamer.addDirRule(mode, separator);
-		}else
+		}
+		/////////////////////////////////////////////////////////////////////////
+		else
 		if (rule_type == "integer")
 		{
-			std::string str_mode;
-			RuleInteger::Mode mode = RuleInteger::Mode::global;
+			RuleInteger::Mode mode =
+				enumParser(rule_raw, rule_type, "mode", RuleInteger::Mode::global,
+				   {
+					 {"global", RuleInteger::Mode::global},
+					 {"local at every dir", RuleInteger::Mode::local_at_every_dir}
+				   });
+
 			int  start;
 			int  step;
 			int	 padding;
-
-			getRuleVar(rule_raw, "mode", rule_type, str_mode);
-
-			if (str_mode == "global")
-			{
-				mode = RuleInteger::Mode::global;
-			}else
-			if (str_mode == "local at every dir")
-			{
-				mode = RuleInteger::Mode::local_at_every_dir;
-			}
-
-
 			getRuleVar(rule_raw, "start", rule_type, start);
 			getRuleVar(rule_raw, "step", rule_type, step);
 			getRuleVar(rule_raw, "padding", rule_type, padding);
 
 			renamer.addIntegerRule(mode, start, step, padding);
-		}else
+		}
+		/////////////////////////////////////////////////////////////////////////
+		else
 		if (rule_type == "extension")
 		{
-			std::string str_mode;
-			RuleExtension::Mode mode = RuleExtension::Mode::sic;
+			RuleExtension::Mode mode =
+				enumParser(rule_raw, rule_type, "mode", RuleExtension::Mode::sic,
+				   {
+					 {"sic", RuleExtension::Mode::sic},
+					 {"lowercase", RuleExtension::Mode::lowercase},
+					 {"uppercase", RuleExtension::Mode::uppercase}
+				   });
+
 			std::string ext;
-
-			getRuleVar(rule_raw, "mode", rule_type, str_mode);
-			if (str_mode == "sic")
-			{
-				mode = RuleExtension::Mode::sic;
-			}else
-			if (str_mode == "lowercase")
-			{
-				mode = RuleExtension::Mode::lowercase;
-			}else
-			if (str_mode == "uppercase")
-			{
-				mode = RuleExtension::Mode::uppercase;
-			}
-
 			getRuleVar(rule_raw, "ext", rule_type, ext);
 
 			renamer.addExtensionRule(mode, ext);
-		}else
+		}
+		/////////////////////////////////////////////////////////////////////////
+		else
 		if (rule_type == "filename")
 		{
-			std::string str_mode;
-			RuleFilename::Mode mode = RuleFilename::Mode::sic;
-			std::string ext;
-
-			getRuleVar(rule_raw, "mode", rule_type, str_mode);
-			if (str_mode == "sic")
-			{
-				mode = RuleFilename::Mode::sic;
-			}else
-			if (str_mode == "lowercase")
-			{
-				mode = RuleFilename::Mode::lowercase;
-			}else
-			if (str_mode == "uppercase")
-			{
-				mode = RuleFilename::Mode::uppercase;
-			}
+			RuleFilename::Mode mode =
+				enumParser(rule_raw, rule_type, "mode", RuleFilename::Mode::sic,
+				   {
+					 {"sic", RuleFilename::Mode::sic},
+					 {"lowercase", RuleFilename::Mode::lowercase},
+					 {"uppercase", RuleFilename::Mode::uppercase}
+				   });
 
 			renamer.addFilenameRule(mode);
-		}else
+		}
+		/////////////////////////////////////////////////////////////////////////
+		else
 		if (rule_type == "filesize")
 		{
-			std::string str_dimension;
-			RuleFilesize::Dimension dimension = RuleFilesize::Dimension::KiB;
+			RuleFilesize::Dimension dimension =
+				enumParser(rule_raw, rule_type, "dimension", RuleFilesize::Dimension::KiB,
+				   {
+					 {"B", RuleFilesize::Dimension::B},
+					 {"KiB", RuleFilesize::Dimension::KiB},
+					 {"MiB", RuleFilesize::Dimension::MiB},
+					 {"GiB", RuleFilesize::Dimension::GiB}
+				   });
+
+
 			std::string decimal_separator;
 			bool show_dimension;
-
-			getRuleVar(rule_raw, "dimension", rule_type, str_dimension);
-			if (str_dimension == "B")	{dimension = RuleFilesize::Dimension::B;}else
-			if (str_dimension == "KiB")	{dimension = RuleFilesize::Dimension::KiB;}else
-			if (str_dimension == "MiB")	{dimension = RuleFilesize::Dimension::MiB;}else
-			if (str_dimension == "GiB")	{dimension = RuleFilesize::Dimension::GiB;}
-
 			getRuleVar(rule_raw, "decimal_separator", rule_type, decimal_separator);
 			getRuleVar(rule_raw, "show_dimension", rule_type, show_dimension);
 
 			renamer.addFilesizeRule(dimension, show_dimension, decimal_separator);
+		}
+		/////////////////////////////////////////////////////////////////////////
+		else
+		if (rule_type == "replace")
+		{
+			std::string  what;
+			std::string  to;
+			getRuleVar(rule_raw, "what", rule_type, what);
+			getRuleVar(rule_raw, "to", rule_type, to);
+
+			renamer.addReplaceRule(what, to);
 		}
 	}
 }
