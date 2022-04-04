@@ -2,11 +2,11 @@
 1) Some template magic in the configuration parser. It should make adding
 new rules easier and less error-prone.
 
-2) New "rule": replace. Search and replace all occurences of the
+2) New "rule": replace. Search and replace all occurrences of the
 substring to the new string in the CURRENT UNFINISHED FILENAME. It is
 a new type of rules.
 
-3) Now files are alphabetically sorting before processing.
+3) Now files are alphabetically sorted before processing.
 
 4) Tests. Nothing for users, but I expect a slightly less amount of errors
 in the code.
