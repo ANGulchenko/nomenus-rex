@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 project(nomenus-rex
-        VERSION 0.4.0
+        VERSION 0.5.0
         HOMEPAGE_URL "https://github.com/ANGulchenko/nomenus-rex"
         DESCRIPTION "Nomenus-rex is a CLI utility for the file mass-renaming.")
 
@@ -47,6 +47,9 @@ target_link_libraries(nomenus-rex AnyOption)
 target_link_libraries(nomenus-rex Rules)
 target_link_libraries(nomenus-rex Tests)
 target_link_libraries(nomenus-rex config++)
+
+find_package(ICU REQUIRED COMPONENTS data i18n uc)
+target_link_libraries(nomenus-rex ICU::data ICU::i18n ICU::uc)
 
 target_include_directories(nomenus-rex PUBLIC
                            "${PROJECT_BINARY_DIR}"

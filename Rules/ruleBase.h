@@ -3,6 +3,9 @@
 
 #include <string>
 
+class RuleBase;
+void testsCmp(int testIndex, RuleBase& rule, const std::string& correct_answer);
+
 enum class RuleType {Date, Text, Integer, Extension, Dir, Filename, Filesize, Replace};
 
 class RuleBase

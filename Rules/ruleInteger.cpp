@@ -31,3 +31,17 @@ void	RuleInteger::process(const std::filesystem::path& name)
 		}
 	}
 }
+
+void	RuleInteger::test()
+{
+	{
+		RuleInteger rule(RuleInteger::Mode::global, 0, 1, 4);
+		std::filesystem::path path("");
+		rule.process(path);
+		testsCmp(3, rule, "0000");
+		rule.process(path);
+		testsCmp(4, rule, "0001");
+		rule.process(path);
+		testsCmp(5, rule, "0002");
+	}
+}

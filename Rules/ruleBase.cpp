@@ -1,6 +1,18 @@
 #include <vector>
-
+#include <iostream>
 #include "ruleBase.h"
+
+void testsCmp(int testIndex, RuleBase& rule, const std::string& correct_answer)
+{
+	if (std::string res = rule.getString(); res != correct_answer)
+	{
+		std::cerr << "Test №" << testIndex << ": "
+				  << rule.getTypeStr()<<" getString() == \"" << res << "\""
+				  << " but should be \""<< correct_answer <<"\"" << std::endl;
+		exit(EXIT_FAILURE);
+	}
+}
+
 
 
 RuleBase::RuleBase(RuleType _type)

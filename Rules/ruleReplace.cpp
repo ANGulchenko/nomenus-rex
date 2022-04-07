@@ -26,3 +26,27 @@ void	RuleReplace::process(std::string& _unfinished_filename)
 
 	result = _unfinished_filename;
 }
+
+void	RuleReplace::test()
+{
+	{
+		std::string data("123Bla123Bla");
+		RuleReplace rule("Bla", "Fuh");
+		rule.process(data);
+		testsCmp(6, rule, "123Fuh123Fuh");
+	}
+
+	{
+		std::string data("123Bla123Bla");
+		RuleReplace rule("Bla", "");
+		rule.process(data);
+		testsCmp(7, rule, "123123");
+	}
+
+	{
+		std::string data("123Bla123Bla");
+		RuleReplace rule("", "Fuh");
+		rule.process(data);
+		testsCmp(8, rule, "123Bla123Bla");
+	}
+}

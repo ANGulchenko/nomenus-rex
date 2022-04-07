@@ -12,6 +12,7 @@ public:
 
 	RuleInteger(Mode _mode, int _start, int _step, int _padding);
 	void	process(const std::filesystem::path& name);
+	static void	test();
 private:
 	int			number;
 	std::map<std::filesystem::path, int>	number_per_path;

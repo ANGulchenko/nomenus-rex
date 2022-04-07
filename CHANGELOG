@@ -1,3 +1,8 @@
+─────────────────┨ 0.5.0 ┠─────────────────
+1) Most rules are covered with tests now.
+
+2) ICU library is used now for uppercase/lowercase text transforms
+
 ─────────────────┨ 0.4.0 ┠─────────────────
 1) Some template magic in the configuration parser. It should make adding
 new rules easier and less error-prone.

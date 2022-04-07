@@ -7,6 +7,7 @@ class RuleText: public RuleBase
 {
 public:
 	RuleText(const std::string& format);
+	static void	test();
 };
 
 #endif

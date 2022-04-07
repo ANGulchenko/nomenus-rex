@@ -35,7 +35,38 @@ void	RuleDir::process(const std::filesystem::path& name)
 		// Removing the separator from the end of the string
 		result.erase(result.size() - separator.size());
 	}
+}
 
-
-
+void	RuleDir::test()
+{
+	{
+		RuleDir rule(RuleDir::Mode::whole, "_");
+		rule.process(std::filesystem::path("dir/subdir1/subdir2/file.dat"));
+		testsCmp(1, rule, "dir_subdir1_subdir2");
+	}
+	{
+		RuleDir rule(RuleDir::Mode::whole, "");
+		rule.process(std::filesystem::path("dir/subdir1/subdir2/file.dat"));
+		testsCmp(2, rule, "dirsubdir1subdir2");
+	}
+	{
+		RuleDir rule(RuleDir::Mode::whole, "");
+		rule.process(std::filesystem::path("file.dat"));
+		testsCmp(3, rule, "");
+	}
+	{
+		RuleDir rule(RuleDir::Mode::parent_only, "_");
+		rule.process(std::filesystem::path("dir/subdir1/subdir2/file.dat"));
+		testsCmp(4, rule, "subdir2");
+	}
+	{
+		RuleDir rule(RuleDir::Mode::whole, "_");
+		rule.process(std::filesystem::path("dir/поддиректория/الدليل/file.dat"));
+		testsCmp(5, rule, "dir_поддиректория_الدليل");
+	}
+	{
+		RuleDir rule(RuleDir::Mode::whole, "[separator]");
+		rule.process(std::filesystem::path("dir/subdir1/subdir2/file.dat"));
+		testsCmp(6, rule, "dir[separator]subdir1[separator]subdir2");
+	}
 }
