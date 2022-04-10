@@ -43,6 +43,7 @@ destination_dir = "/home/user/work/destination";
 
 keep_dir_structure = false;
 copy_or_rename = "copy";
+sort_mode = "az";
 
 rules = (
     {
@@ -98,6 +99,10 @@ identical to the source.
 
 "copy_or_rename" can be "copy" or "rename". In "copy" mode files are copying, in
 "rename" they are renaming or moving.
+
+"sort_mode" controls the sorting of the filenames before processing. Can be "sic"
+for no sorting at all, "az" for ascending alphabetical sorting, and "za" for descending
+alphabetical sorting.
 
 "rules" is an array of small templates, each of which is responsible for a particle
 of the resulting filename. These templates-rules are processed in the same order
@@ -194,7 +199,7 @@ Rules can be of this types:
                The replacement occurs in the current generating filename. For
                example, if you want to rename a "BlaBla001.txt" to "Ololo001.txt"
                you can use a "filename" rule first to set the current precessing
-               filename into the "BlaBla001.txt", then use replace rule with
+               filename into the "BlaBla001", then use "replace" rule with
                what="BlaBla" and to="Ololo" parameters and don't forget about
                extension rule in the end.
                ────┨  Example  ┠────────────────

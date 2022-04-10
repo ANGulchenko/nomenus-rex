@@ -1,3 +1,8 @@
+─────────────────┨ 0.5.1 ┠─────────────────
+1) Added different modes of file sorting (Unicode-friendly)
+
+2) Small refactoring plus checking if the source dir exists.
+
 ─────────────────┨ 0.5.0 ┠─────────────────
 1) Most rules are covered with tests now.
 

@@ -135,6 +135,16 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 		}
 	}
 
+	// We should check if "source" exists. Destination doesn't matter -- it'll
+	// be created while processing anyway.
+
+	fs::path test_source_dir(source);
+	if (!filesystem::exists(test_source_dir))
+	{
+		std::cerr << "\nERROR: Source dir("<< source <<") doesn't exist." << std::endl;
+		exit(EXIT_FAILURE);
+	}
+
 	renamer.setPaths(source, destination);
 
 	//////////////////////////////////////////////////////////////////////////////
@@ -149,8 +159,16 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 						 {"copy", Renamer::CopyOrRename::copy},
 						 {"rename", Renamer::CopyOrRename::rename}
 					   });
-
 	renamer.setCopyOrRename(copy_or_rename_mode);
+
+	Renamer::SortMode sort_mode =
+			enumParser(root, "Config root", "sort_mode", Renamer::SortMode::sic,
+					   {
+						 {"sic", Renamer::SortMode::sic},
+						 {"az", Renamer::SortMode::az},
+						 {"za", Renamer::SortMode::za}
+					   });
+	renamer.setSortMode(sort_mode);
 
 	//////////////////////////////////////////////////////////////////////////////
 

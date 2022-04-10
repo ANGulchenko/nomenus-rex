@@ -20,16 +20,16 @@ int main(int argc, char *argv[])
 	Renamer renamer;
 	ConfigurationParser cfg_parser(argc, argv, renamer);
 
-	renamer.createRenameBijectionMap();
-	renamer.printRenameBijectionMap();
-	renamer.testRenameBijectionMap();
+	renamer.createRenameBijection();
+	renamer.printRenameBijection();
+	renamer.testRenameBijection();
 
 	std::cout << "Press 'y' to process the files. Other button to cancel." << std::endl;
 	char approvement;
 	std::cin >> approvement;
 	if (approvement == 'y')
 	{
-		renamer.executeRenameBijectionMap();
+		renamer.executeRenameBijection();
 		std::cout << "The process is done." << std::endl;
 	}else
 	{
