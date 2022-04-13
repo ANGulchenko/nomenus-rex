@@ -3,6 +3,11 @@
 
 #include "ruleBase.h"
 #include <filesystem>
+#include <map>
+
+constexpr std::size_t operator""_KiB(unsigned long long int x) {return 1024ULL * x;}
+constexpr std::size_t operator""_MiB(unsigned long long int x) {return 1024_KiB * x;}
+constexpr std::size_t operator""_GiB(unsigned long long int x) {return 1024_MiB * x;}
 
 class RuleFilesize: public RuleBase
 {
@@ -15,6 +20,8 @@ private:
 	Dimension	dimension;
 	std::string decimal_separator;
 	bool		show_dimension;
+	struct iB2size{std::string name; uintmax_t size;};
+	std::map<Dimension, iB2size> dimension_data;
 };
 
 #endif
