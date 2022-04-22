@@ -22,6 +22,7 @@ parameters:
  -s  --source        sets the path to the source directory
  -d  --destination   sets the path to the destination directory
  -c  --config        sets the path to the configuration file
+ -y  --yes           Process files without confirmation
 
 The only mandatory parameter is "-c"/"--config". Source and destination paths
 can be omitted if they're present in the configuration file. If paths are set in
