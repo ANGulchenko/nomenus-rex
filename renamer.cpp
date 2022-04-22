@@ -1,4 +1,5 @@
 #include "renamer.h"
+#include "Progressator/progressator.h"
 
 #include <set>
 #include <iostream>
@@ -207,6 +208,8 @@ void Renamer::testRenameBijection()
 
 void Renamer::executeRenameBijection()
 {
+	Progressator progress(rename_vector.size());
+
 	switch (copy_or_rename)
 	{
 		case CopyOrRename::copy:
@@ -217,6 +220,7 @@ void Renamer::executeRenameBijection()
 				dest_dir.remove_filename();
 				fs::create_directories(dest_dir);
 				fs::copy(element.first, element.second, std::filesystem::copy_options::overwrite_existing);
+				progress.inc();progress.print();
 			}
 		}break;
 		case CopyOrRename::rename:
@@ -227,6 +231,7 @@ void Renamer::executeRenameBijection()
 				dest_dir.remove_filename();
 				fs::create_directories(dest_dir);
 				fs::rename(element.first, element.second);
+				progress.inc();progress.print();
 			}
 		}break;
 	}

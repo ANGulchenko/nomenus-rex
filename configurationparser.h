@@ -11,7 +11,7 @@ using namespace libconfig;
 class ConfigurationParser
 {
 public:
-	ConfigurationParser(int argc, char *argv[], Renamer& renamer);
+	ConfigurationParser(int argc, char *argv[], bool& askConfirmationBeforeFileProcessing, Renamer& renamer);
 
 private:
 	template<typename T>

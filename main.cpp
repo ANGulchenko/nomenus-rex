@@ -17,25 +17,32 @@ int main(int argc, char *argv[])
 {
 	//tests();
 
+	bool askConfirmationForFileProcessing;
+
 	Renamer renamer;
-	ConfigurationParser cfg_parser(argc, argv, renamer);
+	ConfigurationParser cfg_parser(argc, argv, askConfirmationForFileProcessing, renamer);
 
 	renamer.createRenameBijection();
 	renamer.printRenameBijection();
 	renamer.testRenameBijection();
 
-	std::cout << "Press 'y' to process the files. Other button to cancel." << std::endl;
-	char approvement;
-	std::cin >> approvement;
-	if (approvement == 'y')
+	if (askConfirmationForFileProcessing)
 	{
-		renamer.executeRenameBijection();
-		std::cout << "The process is done." << std::endl;
+		std::cout << "Press 'y' to process the files. Other button to cancel." << std::endl;
+		char approvement;
+		std::cin >> approvement;
+		if (approvement == 'y')
+		{
+			renamer.executeRenameBijection();
+			std::cout << "The process is done." << std::endl;
+		}else
+		{
+			std::cout << "The process is canceled." << std::endl;
+		}
 	}else
 	{
-		std::cout << "The process is canceled." << std::endl;
+		renamer.executeRenameBijection();
 	}
-
 
 	return 0;
 }

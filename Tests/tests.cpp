@@ -11,6 +11,9 @@ void tests()
 	RuleReplace::test();
 
 
+	Progressator::test();
+
+
 	std::cerr << "All tests are done.\n";
 	exit(0);
 }

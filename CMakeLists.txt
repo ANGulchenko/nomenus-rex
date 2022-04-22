@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 project(nomenus-rex
-        VERSION 0.5.1
+        VERSION 0.5.2
         HOMEPAGE_URL "https://github.com/ANGulchenko/nomenus-rex"
         DESCRIPTION "Nomenus-rex is a CLI utility for the file mass-renaming.")
 
@@ -18,6 +18,10 @@ add_custom_target(Docs SOURCES
 
 ADD_LIBRARY(AnyOption STATIC
     AnyOption/anyoption.cpp AnyOption/anyoption.h
+)
+
+ADD_LIBRARY(Progressator STATIC
+    Progressator/progressator.cpp Progressator/progressator.h
 )
 
 ADD_LIBRARY(Rules STATIC
@@ -43,13 +47,10 @@ add_executable (nomenus-rex
     renamer.cpp renamer.h
     )
 
-target_link_libraries(nomenus-rex AnyOption)
-target_link_libraries(nomenus-rex Rules)
-target_link_libraries(nomenus-rex Tests)
-target_link_libraries(nomenus-rex config++)
+find_package(ICU REQUIRED COMPONENTS data i18n uc dt)
 
-find_package(ICU REQUIRED COMPONENTS data i18n uc)
-target_link_libraries(nomenus-rex ICU::data ICU::i18n ICU::uc)
+target_link_libraries(nomenus-rex AnyOption Rules Tests Progressator config++)
+target_link_libraries(nomenus-rex ICU::data ICU::i18n ICU::uc ICU::dt)
 
 target_include_directories(nomenus-rex PUBLIC
                            "${PROJECT_BINARY_DIR}"

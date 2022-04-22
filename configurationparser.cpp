@@ -4,7 +4,7 @@
 #include "configurationparser.h"
 #include "version.h"
 
-ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& renamer)
+ConfigurationParser::ConfigurationParser(int argc, char *argv[], bool& askConfirmationBeforeFileProcessing, Renamer& renamer)
 {
 	std::string source;
 	std::string destination;
@@ -21,6 +21,7 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 	opt->addUsage(" -s  --source        Source dir");
 	opt->addUsage(" -d  --destination   Destination dir");
 	opt->addUsage(" -c  --config        Configuration file");
+	opt->addUsage(" -y  --yes           Process files without confirmation");
 	opt->addUsage("");
 	opt->addUsage("Directories can be also set up in the config file. CLI parameters have higher priority.");
 
@@ -28,6 +29,7 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 	opt->setCommandOption("source", 's');
 	opt->setCommandOption("destination", 'd');
 	opt->setCommandOption("config", 'c');
+	opt->setFlag("yes", 'y');
 
 	opt->processCommandArgs(argc, argv);
 
@@ -37,6 +39,14 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 		{
 			opt->printUsage();
 			exit(EXIT_SUCCESS);
+		}
+
+		if (opt->getFlag("yes") || opt->getFlag('y'))
+		{
+			askConfirmationBeforeFileProcessing = false;
+		}else
+		{
+			askConfirmationBeforeFileProcessing = true;
 		}
 
 		if (opt->getValue('s') != NULL || opt->getValue("source") != NULL)
@@ -138,8 +148,7 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& rename
 	// We should check if "source" exists. Destination doesn't matter -- it'll
 	// be created while processing anyway.
 
-	fs::path test_source_dir(source);
-	if (!filesystem::exists(test_source_dir))
+	if (!filesystem::exists(fs::path(source)))
 	{
 		std::cerr << "\nERROR: Source dir("<< source <<") doesn't exist." << std::endl;
 		exit(EXIT_FAILURE);

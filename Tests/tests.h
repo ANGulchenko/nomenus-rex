@@ -2,6 +2,7 @@
 #define TESTS_H
 
 #include "../Rules/rules.h"
+#include "../Progressator/progressator.h"
 
 void tests();
 
