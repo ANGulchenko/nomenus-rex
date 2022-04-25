@@ -111,7 +111,7 @@ as they are described in the "rules" array. For example, the aforecited config
 will copy
 "/home/user/work/source/TestDir2/file2.txt"
 to something like
-"/home/user/work/destination/2022-03-16_TestDir2_0.txt"
+"/home/user/work/destination/2022-03-16_TestDir2_00000.txt"
 
 Rules can be of this types:
 
