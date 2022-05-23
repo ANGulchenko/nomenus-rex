@@ -4,8 +4,10 @@
 #include <vector>
 #include <filesystem>
 #include <map>
+#include <memory>
 
 #include "Rules/rules.h"
+using std::unique_ptr;
 
 namespace fs = std::filesystem;
 
@@ -36,9 +38,9 @@ public:
 
 	fs::path applyRulesToOneFilename(const fs::path& relative_path);
 	void createRenameBijection();
-	void testRenameBijection();
+	void testRenameBijection() const;
 	void executeRenameBijection();
-	void printRenameBijection();
+	void printRenameBijection() const;
 
 
 private:
@@ -47,7 +49,7 @@ private:
 	bool			keep_dir_structure;
 	CopyOrRename	copy_or_rename;
 	SortMode		sort_mode;
-	std::vector<RuleBase*> rules;
+	std::vector<unique_ptr<RuleBase>> rules;
 	std::vector<std::pair<fs::path, fs::path>> rename_vector;
 
 	void getSourceFilenames(std::vector<std::pair<fs::path, fs::path>>& rename_vector, const fs::path&	source_dir);

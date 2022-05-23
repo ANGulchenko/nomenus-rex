@@ -21,12 +21,12 @@ RuleBase::RuleBase(RuleType _type)
 
 }
 
-RuleType RuleBase::getType()
+RuleType RuleBase::getType() const
 {
 	return type;
 }
 
-std::string RuleBase::getTypeStr()
+std::string RuleBase::getTypeStr() const
 {
 	//{Date, Text, Integer, Extension, Dir, Filename, Filesize, SubStrReplace};
 	switch (type)
@@ -44,7 +44,7 @@ std::string RuleBase::getTypeStr()
 	return "ERROR";
 }
 
-std::string	RuleBase::getString()
+std::string	RuleBase::getString() const
 {
 	return result;
 }

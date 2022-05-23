@@ -12,9 +12,9 @@ class RuleBase
 {
 public:
 	explicit	RuleBase(RuleType type);
-	RuleType	getType();
-	std::string getTypeStr();
-	std::string	getString();
+	RuleType	getType() const;
+	std::string getTypeStr() const;
+	std::string	getString() const;
 
 protected:
 	std::string result;

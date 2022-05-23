@@ -1,3 +1,8 @@
+─────────────────┨ 0.5.3 ┠─────────────────
+1) Few 'const' and unique_ptr here and there.
+
+2) A tiny aesthetical tuning of printing out the filename pairs.
+
 ─────────────────┨ 0.5.2 ┠─────────────────
 1) New parameter for disabling file processing confirmation.
 May be useful for scripts.
