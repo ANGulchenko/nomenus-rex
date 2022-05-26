@@ -23,8 +23,9 @@ int main(int argc, char *argv[])
 	ConfigurationParser cfg_parser(argc, argv, askConfirmationForFileProcessing, renamer);
 
 	renamer.createRenameBijection();
-	renamer.printRenameBijection();
 	renamer.testRenameBijection();
+	renamer.printRenameBijection();
+
 
 	if (askConfirmationForFileProcessing)
 	{

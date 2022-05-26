@@ -21,6 +21,7 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], bool& askConfir
 	opt->addUsage(" -s  --source        Source dir");
 	opt->addUsage(" -d  --destination   Destination dir");
 	opt->addUsage(" -c  --config        Configuration file");
+	opt->addUsage(" -e  --example       Prints out the example configuration");
 	opt->addUsage(" -y  --yes           Process files without confirmation");
 	opt->addUsage("");
 	opt->addUsage("Directories can be also set up in the config file. CLI parameters have higher priority.");
@@ -30,6 +31,7 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], bool& askConfir
 	opt->setCommandOption("destination", 'd');
 	opt->setCommandOption("config", 'c');
 	opt->setFlag("yes", 'y');
+	opt->setFlag("example", 'e');
 
 	opt->processCommandArgs(argc, argv);
 
@@ -47,6 +49,12 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], bool& askConfir
 		}else
 		{
 			askConfirmationBeforeFileProcessing = true;
+		}
+
+		if (opt->getFlag("example") || opt->getFlag('e'))
+		{
+			printTypicalConfig();
+			exit(EXIT_SUCCESS);
 		}
 
 		if (opt->getValue('s') != NULL || opt->getValue("source") != NULL)
@@ -384,4 +392,75 @@ std::string	ConfigurationParser::getConfigPathString(std::string raw_parameter)
 	}
 
 	return raw_parameter;
+}
+
+void	ConfigurationParser::printTypicalConfig()
+{
+
+	fs::path current_path = std::filesystem::current_path();
+	cout << "source_dir = " << current_path << ";" << std::endl;
+	cout << "destination_dir = " << current_path << ";" << std::endl;
+
+const char* default_config = R"CONFIG(
+keep_dir_structure = false;
+copy_or_rename = "copy";
+//sort_mode = "az"|"za"|"sic"
+sort_mode = "az";
+
+rules = (
+	{
+		type        = "text";
+		text        = "PREFIX_";
+	},
+	{
+		type        = "dir";
+		// mode     = "whole path"|"parent dir only"
+		mode        = "whole path";
+		separator   = "-";
+
+	},
+	{
+		type        = "text";
+		text        = "_";
+	},
+	{
+		type        = "integer";
+		// mode     = "global"|"local at every dir"
+		mode        = "local at every dir";
+		start       = 0;
+		step        = 1;
+		padding     = 5;
+	},
+	{
+		type        = "extension";
+		// leave the "ext" variable empty to use an original extension
+		ext         = "";
+		// mode     = "lowercase"|"uppercase"|"sic";
+		mode        = "lowercase";
+	}
+	/*{
+	 type        = "date";
+	 date_format = "%Y-%m-%d";
+	},*/
+	/*{
+	   type        = "filename";
+	   // mode     = "lowercase"|"uppercase"|"sic";
+	   mode        = "lowercase";
+	},*/
+	/*{
+	   type              = "filesize";
+	   // dimension      = "B"|"KiB"|"MiB"|"GiB"
+	   dimension         = "KiB";
+	   show_dimension    = true;
+	   decimal_separator = ",";
+	},*/
+	/*{
+	   type        = "replace";
+	   what        = "BlaBla";
+	   to          = "Ololo";
+	},*/
+);
+)CONFIG";
+
+std::cout << default_config << std::endl;
 }

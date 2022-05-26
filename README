@@ -22,6 +22,7 @@ parameters:
  -s  --source        sets the path to the source directory
  -d  --destination   sets the path to the destination directory
  -c  --config        sets the path to the configuration file
+ -e  --example       Prints out the example configuration
  -y  --yes           Process files without confirmation
 
 The only mandatory parameter is "-c"/"--config". Source and destination paths
@@ -33,6 +34,10 @@ in your system. Also you can omit the full path to the config file. In this case
 the config would be searched in XDG_CONFIG_HOME/nomenus-rex/ directory or
 (in the case of the absense of XDG_CONFIG_HOME environment variable) in the
 HOME/.config/nomenus-rex/
+-e/--example parameter is very convenient for the one-off configurations. Just
+move to the desired directory and enter the command like:
+nomenus-rex -e > example.conf
+This will create the basic config with already filled-in source/destination paths.
 
 Here is an example of the configuration file (decorative borders aren't
 included):

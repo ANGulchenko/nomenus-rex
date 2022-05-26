@@ -1,3 +1,8 @@
+─────────────────┨ 0.6.0 ┠─────────────────
+1) New CLI parameter e/example for printing out default config
+with autofilled source/destination fields according to the current
+directory.
+
 ─────────────────┨ 0.5.3 ┠─────────────────
 1) Few 'const' and unique_ptr here and there.
 

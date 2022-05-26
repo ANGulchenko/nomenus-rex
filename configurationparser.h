@@ -12,6 +12,7 @@ class ConfigurationParser
 {
 public:
 	ConfigurationParser(int argc, char *argv[], bool& askConfirmationBeforeFileProcessing, Renamer& renamer);
+	void	printTypicalConfig();
 
 private:
 	template<typename T>
