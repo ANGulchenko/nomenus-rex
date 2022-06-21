@@ -25,7 +25,7 @@ void	RuleDir::process(const std::filesystem::path& name)
 	{
 		result = path[path.size()-1];
 	}else
-	if (mode == Mode::whole)
+	if (mode == Mode::whole && path.size() > 0)
 	{
 		for (auto& dir: path)
 		{
