@@ -7,7 +7,6 @@
 #include <memory>
 
 #include "Rules/rules.h"
-using std::unique_ptr;
 
 namespace fs = std::filesystem;
 
@@ -49,7 +48,7 @@ private:
 	bool			keep_dir_structure;
 	CopyOrRename	copy_or_rename;
 	SortMode		sort_mode;
-	std::vector<unique_ptr<RuleBase>> rules;
+	std::vector<std::unique_ptr<RuleBase>> rules;
 	std::vector<std::pair<fs::path, fs::path>> rename_vector;
 
 	void getSourceFilenames(std::vector<std::pair<fs::path, fs::path>>& rename_vector, const fs::path&	source_dir);

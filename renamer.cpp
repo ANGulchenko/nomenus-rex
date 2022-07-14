@@ -46,42 +46,42 @@ void	Renamer::setSortMode(SortMode mode)
 
 void	Renamer::addDateRule(const std::string& format)
 {
-	rules.push_back(unique_ptr<RuleBase>(new RuleDate(format)));
+	rules.push_back(std::unique_ptr<RuleBase>(new RuleDate(format)));
 }
 
 void	Renamer::addTextRule(const std::string& text)
 {
-	rules.push_back(unique_ptr<RuleBase>(new RuleText(text)));
+	rules.push_back(std::unique_ptr<RuleBase>(new RuleText(text)));
 }
 
 void	Renamer::addDirRule(RuleDir::Mode mode, const std::string& separator)
 {
-	rules.push_back(unique_ptr<RuleBase>(new RuleDir(mode, separator)));
+	rules.push_back(std::unique_ptr<RuleBase>(new RuleDir(mode, separator)));
 }
 
 void	Renamer::addIntegerRule(RuleInteger::Mode mode, int start, int step, int padding)
 {
-	rules.push_back(unique_ptr<RuleBase>(new RuleInteger(mode, start, step, padding)));
+	rules.push_back(std::unique_ptr<RuleBase>(new RuleInteger(mode, start, step, padding)));
 }
 
 void	Renamer::addExtensionRule(RuleExtension::Mode mode, const std::string& ext)
 {
-	rules.push_back(unique_ptr<RuleBase>(new RuleExtension(mode, ext)));
+	rules.push_back(std::unique_ptr<RuleBase>(new RuleExtension(mode, ext)));
 }
 
 void	Renamer::addFilenameRule(RuleFilename::Mode mode)
 {
-	rules.push_back(unique_ptr<RuleBase>(new RuleFilename(mode)));
+	rules.push_back(std::unique_ptr<RuleBase>(new RuleFilename(mode)));
 }
 
 void	Renamer::addFilesizeRule(RuleFilesize::Dimension dimention, bool show_dimention, const std::string& decimal_separator)
 {
-	rules.push_back(unique_ptr<RuleBase>(new RuleFilesize(dimention, decimal_separator, show_dimention)));
+	rules.push_back(std::unique_ptr<RuleBase>(new RuleFilesize(dimention, decimal_separator, show_dimention)));
 }
 
 void	Renamer::addReplaceRule(const std::string& what, const std::string& to)
 {
-	rules.push_back(unique_ptr<RuleBase>(new RuleReplace(what, to)));
+	rules.push_back(std::unique_ptr<RuleBase>(new RuleReplace(what, to)));
 }
 
 
@@ -90,7 +90,7 @@ fs::path Renamer::applyRulesToOneFilename(const fs::path& _relative_path)
 {
 	std::string new_filename;
 
-	for (unique_ptr<RuleBase>& rule: rules)
+	for (std::unique_ptr<RuleBase>& rule: rules)
 	{
 		RuleBase* tempBasePtr = rule.get();
 
@@ -172,23 +172,20 @@ void Renamer::createRenameBijection()
 
 void Renamer::testRenameBijection() const
 {
-	std::map<fs::path, fs::path> result;
-	auto starting_point = rename_vector.begin();
-	auto runner = starting_point;
-	while (starting_point != rename_vector.end())
-	{
-		runner = starting_point;
-		runner++;
-		while (runner != rename_vector.end())
-		{
-			if ((*runner).second == (*starting_point).second)
-			{
-				result[(*runner).first] = (*runner).second;
-			}
-			runner++;
-		}
 
-		starting_point++;
+	std::map<fs::path, fs::path> result;
+	std::set<std::string> new_names;
+
+	size_t new_names_prev_size = 0;
+	for (auto& pair: rename_vector)
+	{
+		new_names.insert(pair.second);
+		if (new_names.size() == new_names_prev_size)
+		{
+			// Insertion did nothing, so there was this name already;
+			result[pair.first] = pair.second;
+		}
+		new_names_prev_size = new_names.size();
 	}
 
 	if (result.size() > 0)
@@ -201,7 +198,6 @@ void Renamer::testRenameBijection() const
 		}
 		exit(EXIT_FAILURE);
 	}
-
 }
 
 void Renamer::executeRenameBijection()

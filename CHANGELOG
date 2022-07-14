@@ -1,3 +1,9 @@
+─────────────────┨ 0.6.2 ┠─────────────────
+1) Significant improvement (~1000 times faster) of the collision test.
+This test checks for the identical result filenames. While moving
+identical names will cause data loss. Test run with ~21k filenames
+decreased it's runtime from ~18 seconds to ~20k microseconds!
+
 ─────────────────┨ 0.6.1 ┠─────────────────
 1) Fixed bug in RuleDir for a top level files.
 
