@@ -6,14 +6,8 @@ RuleText::RuleText(const std::string& text)
 	result = text;
 }
 
-void	RuleText::test()
+void	RuleText::process(const RuleParams&)
 {
-	{
-		RuleText rule("Test");
-		testsCmp(1, rule, "Test");
-	}
-	{
-		RuleText rule("");
-		testsCmp(2, rule, "");
-	}
+
 }
+

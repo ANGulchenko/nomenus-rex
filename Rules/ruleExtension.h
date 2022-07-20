@@ -9,8 +9,7 @@ class RuleExtension: public RuleBase
 public:
 	enum class Mode {lowercase, uppercase, sic};
 	RuleExtension(Mode _mode, const std::string& _ext);
-	void	process(const std::filesystem::path& name);
-	static void	test();
+	void	process(const RuleParams& params) override;
 private:
 	Mode		mode;
 	std::string ext;

@@ -1,3 +1,8 @@
+─────────────────┨ 0.7.0 ┠─────────────────
+1) New rule: File creation time. The syntax is the same as in the Date rule.
+
+2) Removed an annoying "boilerplate" code.
+
 ─────────────────┨ 0.6.2 ┠─────────────────
 1) Significant improvement (~1000 times faster) of the collision test.
 This test checks for identical result filenames. While moving

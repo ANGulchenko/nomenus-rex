@@ -11,7 +11,7 @@ RuleInteger::RuleInteger(Mode _mode, int _start, int _step, int _padding)
 
 }
 
-void	RuleInteger::process(const std::filesystem::path& name)
+void	RuleInteger::process(const RuleParams& params)
 {
 	switch (mode)
 	{
@@ -23,7 +23,7 @@ void	RuleInteger::process(const std::filesystem::path& name)
 		}break;
 		case Mode::local_at_every_dir:
 		{
-			std::filesystem::path path = name;
+			std::filesystem::path path = params.relative_path;
 			path.remove_filename();
 			result = std::to_string(number_per_path[path]);
 			result.insert(0, std::max(0, zero_padding_size - static_cast<int>(result.size())), '0');
@@ -32,16 +32,4 @@ void	RuleInteger::process(const std::filesystem::path& name)
 	}
 }
 
-void	RuleInteger::test()
-{
-	{
-		RuleInteger rule(RuleInteger::Mode::global, 0, 1, 4);
-		std::filesystem::path path("");
-		rule.process(path);
-		testsCmp(3, rule, "0000");
-		rule.process(path);
-		testsCmp(4, rule, "0001");
-		rule.process(path);
-		testsCmp(5, rule, "0002");
-	}
-}
+

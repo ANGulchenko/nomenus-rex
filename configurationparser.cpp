@@ -162,13 +162,14 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], bool& askConfir
 		exit(EXIT_FAILURE);
 	}
 
-	renamer.setPaths(source, destination);
+	renamer.source_dir = source;
+	renamer.destination_dir = destination;
 
 	//////////////////////////////////////////////////////////////////////////////
 
 	bool keep_dir_structure = false;
 	getVar(root, "keep_dir_structure", keep_dir_structure);
-	renamer.setKeepDirStructure(keep_dir_structure);
+	renamer.keep_dir_structure = keep_dir_structure;
 
 	Renamer::CopyOrRename copy_or_rename_mode =
 			enumParser(root, "Config root", "copy_or_rename", Renamer::CopyOrRename::copy,
@@ -176,7 +177,7 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], bool& askConfir
 						 {"copy", Renamer::CopyOrRename::copy},
 						 {"rename", Renamer::CopyOrRename::rename}
 					   });
-	renamer.setCopyOrRename(copy_or_rename_mode);
+	renamer.copy_or_rename = copy_or_rename_mode;
 
 	Renamer::SortMode sort_mode =
 			enumParser(root, "Config root", "sort_mode", Renamer::SortMode::sic,
@@ -185,7 +186,7 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], bool& askConfir
 						 {"az", Renamer::SortMode::az},
 						 {"za", Renamer::SortMode::za}
 					   });
-	renamer.setSortMode(sort_mode);
+	renamer.sort_mode = sort_mode;
 
 	//////////////////////////////////////////////////////////////////////////////
 
@@ -204,7 +205,7 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], bool& askConfir
 		{
 			std::string date_format;
 			getRuleVar(rule_raw, "date_format", rule_type, date_format);
-			renamer.addDateRule(date_format);
+			renamer.rules.push_back(std::unique_ptr<RuleBase>(new RuleDate(date_format)));
 		}
 		/////////////////////////////////////////////////////////////////////////
 		else
@@ -212,7 +213,7 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], bool& askConfir
 		{
 			std::string text;
 			getRuleVar(rule_raw, "text", rule_type, text);
-			renamer.addTextRule(text);
+			renamer.rules.push_back(std::unique_ptr<RuleBase>(new RuleText(text)));
 		}
 		/////////////////////////////////////////////////////////////////////////
 		else
@@ -227,8 +228,7 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], bool& askConfir
 
 			std::string separator;
 			getRuleVar(rule_raw, "separator", rule_type, separator);
-
-			renamer.addDirRule(mode, separator);
+			renamer.rules.push_back(std::unique_ptr<RuleBase>(new RuleDir(mode, separator)));
 		}
 		/////////////////////////////////////////////////////////////////////////
 		else
@@ -248,7 +248,8 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], bool& askConfir
 			getRuleVar(rule_raw, "step", rule_type, step);
 			getRuleVar(rule_raw, "padding", rule_type, padding);
 
-			renamer.addIntegerRule(mode, start, step, padding);
+			renamer.rules.push_back(std::unique_ptr<RuleBase>(new RuleInteger(mode, start, step, padding)));
+
 		}
 		/////////////////////////////////////////////////////////////////////////
 		else
@@ -265,7 +266,8 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], bool& askConfir
 			std::string ext;
 			getRuleVar(rule_raw, "ext", rule_type, ext);
 
-			renamer.addExtensionRule(mode, ext);
+			renamer.rules.push_back(std::unique_ptr<RuleBase>(new RuleExtension(mode, ext)));
+
 		}
 		/////////////////////////////////////////////////////////////////////////
 		else
@@ -279,7 +281,8 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], bool& askConfir
 					 {"uppercase", RuleFilename::Mode::uppercase}
 				   });
 
-			renamer.addFilenameRule(mode);
+			renamer.rules.push_back(std::unique_ptr<RuleBase>(new RuleFilename(mode)));
+
 		}
 		/////////////////////////////////////////////////////////////////////////
 		else
@@ -300,7 +303,16 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], bool& askConfir
 			getRuleVar(rule_raw, "decimal_separator", rule_type, decimal_separator);
 			getRuleVar(rule_raw, "show_dimension", rule_type, show_dimension);
 
-			renamer.addFilesizeRule(dimension, show_dimension, decimal_separator);
+			renamer.rules.push_back(std::unique_ptr<RuleBase>(new RuleFilesize(dimension, decimal_separator, show_dimension)));
+
+		}
+		/////////////////////////////////////////////////////////////////////////
+		else
+		if (rule_type == "filedate")
+		{
+			std::string date_format;
+			getRuleVar(rule_raw, "date_format", rule_type, date_format);
+			renamer.rules.push_back(std::unique_ptr<RuleBase>(new RuleFileCreationDate(date_format)));
 		}
 		/////////////////////////////////////////////////////////////////////////
 		else
@@ -311,7 +323,7 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], bool& askConfir
 			getRuleVar(rule_raw, "what", rule_type, what);
 			getRuleVar(rule_raw, "to", rule_type, to);
 
-			renamer.addReplaceRule(what, to);
+			renamer.rules.push_back(std::unique_ptr<RuleBase>(new RuleReplace(what, to)));
 		}
 	}
 }

@@ -20,126 +20,15 @@ Renamer::~Renamer()
 }
 
 ///////////////////
-void	Renamer::setPaths(const std::string& source, const std::string& destination)
+
+fs::path Renamer::applyRulesToOneFilename(const RuleParams& params)
 {
-	source_dir = source;
-	destination_dir = destination;
-}
-
-void	Renamer::setKeepDirStructure(bool keep)
-{
-	keep_dir_structure = keep;
-}
-
-void	Renamer::setCopyOrRename(CopyOrRename mode)
-{
-	copy_or_rename = mode;
-}
-
-void	Renamer::setSortMode(SortMode mode)
-{
-	sort_mode = mode;
-}
-
-
-///////////////////
-
-void	Renamer::addDateRule(const std::string& format)
-{
-	rules.push_back(std::unique_ptr<RuleBase>(new RuleDate(format)));
-}
-
-void	Renamer::addTextRule(const std::string& text)
-{
-	rules.push_back(std::unique_ptr<RuleBase>(new RuleText(text)));
-}
-
-void	Renamer::addDirRule(RuleDir::Mode mode, const std::string& separator)
-{
-	rules.push_back(std::unique_ptr<RuleBase>(new RuleDir(mode, separator)));
-}
-
-void	Renamer::addIntegerRule(RuleInteger::Mode mode, int start, int step, int padding)
-{
-	rules.push_back(std::unique_ptr<RuleBase>(new RuleInteger(mode, start, step, padding)));
-}
-
-void	Renamer::addExtensionRule(RuleExtension::Mode mode, const std::string& ext)
-{
-	rules.push_back(std::unique_ptr<RuleBase>(new RuleExtension(mode, ext)));
-}
-
-void	Renamer::addFilenameRule(RuleFilename::Mode mode)
-{
-	rules.push_back(std::unique_ptr<RuleBase>(new RuleFilename(mode)));
-}
-
-void	Renamer::addFilesizeRule(RuleFilesize::Dimension dimention, bool show_dimention, const std::string& decimal_separator)
-{
-	rules.push_back(std::unique_ptr<RuleBase>(new RuleFilesize(dimention, decimal_separator, show_dimention)));
-}
-
-void	Renamer::addReplaceRule(const std::string& what, const std::string& to)
-{
-	rules.push_back(std::unique_ptr<RuleBase>(new RuleReplace(what, to)));
-}
-
-
-
-fs::path Renamer::applyRulesToOneFilename(const fs::path& _relative_path)
-{
-	std::string new_filename;
-
 	for (std::unique_ptr<RuleBase>& rule: rules)
 	{
-		RuleBase* tempBasePtr = rule.get();
-
-		switch (rule->getType())
-		{
-			//RuleType {Date, Text, Integer, Extension, Dir};
-			case RuleType::Date:
-			{
-				new_filename += rule->getString();
-			}break;
-			case RuleType::Text:
-			{
-				new_filename += rule->getString();
-			}break;
-			case RuleType::Integer:
-			{
-				static_cast<RuleInteger*>(tempBasePtr)->process(_relative_path);
-				new_filename += rule->getString();
-			}break;
-			case RuleType::Dir:
-			{
-				static_cast<RuleDir*>(tempBasePtr)->process(_relative_path);
-				new_filename += rule->getString();
-			}break;
-			case RuleType::Extension:
-			{
-				static_cast<RuleExtension*>(tempBasePtr)->process(_relative_path);
-				new_filename += rule->getString();
-			}break;
-			case RuleType::Filename:
-			{
-				static_cast<RuleFilename*>(tempBasePtr)->process(_relative_path);
-				new_filename += rule->getString();
-			}break;
-			case RuleType::Filesize:
-			{
-				fs::path absolute_path(source_dir / _relative_path);
-				static_cast<RuleFilesize*>(tempBasePtr)->process(absolute_path);
-				new_filename += rule->getString();
-			}break;
-			case RuleType::Replace:
-			{
-				static_cast<RuleReplace*>(tempBasePtr)->process(new_filename);
-				//new_filename += rule->getString();
-			}break;
-		}
-
+		rule->process(params);
+		params.name_in_process += rule->getString();
 	}
-	return fs::path(new_filename);
+	return fs::path(params.name_in_process);
 }
 
 void Renamer::createRenameBijection()
@@ -154,8 +43,13 @@ void Renamer::createRenameBijection()
 		const std::filesystem::path& dir_entry = pair.first;
 		fs::path absolute_file_path_source = dir_entry;
 		fs::path relative_file_path_source = fs::relative(absolute_file_path_source, source_dir);
+		std::string name_in_process;
 
-		fs::path new_name = applyRulesToOneFilename(relative_file_path_source);
+		RuleParams params = {.absolute_path = absolute_file_path_source,
+							 .relative_path = relative_file_path_source,
+							 .name_in_process = name_in_process};
+
+		fs::path new_name = applyRulesToOneFilename(params);
 
 		fs::path relative_file_path_without_filename = relative_file_path_source;
 		relative_file_path_without_filename.remove_filename();

@@ -62,7 +62,7 @@ void	Progressator::print()
 	std::flush(std::cout);
 }
 
-void	Progressator::test()
+/*void	Progressator::test()
 {
 	Progressator progressator(1000);
 	for (int i = 0; i < 1000; i++)
@@ -72,4 +72,4 @@ void	Progressator::test()
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
 	std::cout << std::endl;
-}
+}*/

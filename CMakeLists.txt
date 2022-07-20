@@ -26,15 +26,16 @@ ADD_LIBRARY(Progressator STATIC
 
 ADD_LIBRARY(Rules STATIC
     Rules/rules.h
-    Rules/ruleBase.cpp          Rules/ruleBase.h
-    Rules/ruleDate.cpp          Rules/ruleDate.h
-    Rules/ruleText.cpp          Rules/ruleText.h
-    Rules/ruleInteger.cpp       Rules/ruleInteger.h
-    Rules/ruleExtension.cpp     Rules/ruleExtension.h
-    Rules/ruleDir.cpp           Rules/ruleDir.h
-    Rules/ruleFilename.cpp      Rules/ruleFilename.h
-    Rules/ruleFilesize.cpp      Rules/ruleFilesize.h
-    Rules/ruleReplace.cpp       Rules/ruleReplace.h
+    Rules/ruleBase.cpp              Rules/ruleBase.h
+    Rules/ruleDate.cpp              Rules/ruleDate.h
+    Rules/ruleText.cpp              Rules/ruleText.h
+    Rules/ruleInteger.cpp           Rules/ruleInteger.h
+    Rules/ruleExtension.cpp         Rules/ruleExtension.h
+    Rules/ruleDir.cpp               Rules/ruleDir.h
+    Rules/ruleFilename.cpp          Rules/ruleFilename.h
+    Rules/ruleFilesize.cpp          Rules/ruleFilesize.h
+    Rules/ruleFileCreationDate.cpp  Rules/ruleFileCreationDate.h
+    Rules/ruleReplace.cpp           Rules/ruleReplace.h
 )
 
 ADD_LIBRARY(Tests STATIC

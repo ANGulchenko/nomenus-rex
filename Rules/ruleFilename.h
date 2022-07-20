@@ -8,9 +8,8 @@ class RuleFilename: public RuleBase
 {
 public:
 	enum class Mode {lowercase, uppercase, sic};
-	RuleFilename(Mode _mode);
-	void	process(const std::filesystem::path& name);
-	static void	test();
+	explicit RuleFilename(Mode _mode);
+	void	process(const RuleParams& params) override;
 private:
 	Mode		mode;
 };

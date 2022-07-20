@@ -17,11 +17,11 @@ RuleFilesize::RuleFilesize(Dimension _dimension, const std::string& _decimal_sep
 
 }
 
-void	RuleFilesize::process(std::filesystem::path& name)
+void	RuleFilesize::process(const RuleParams& params)
 {
 	result.clear();
 
-	uintmax_t fsize =  std::filesystem::file_size(name);
+	uintmax_t fsize =  std::filesystem::file_size(params.absolute_path);
 	double dimensioned_size = (1.0*fsize) / (1.0*dimension_data[dimension].size);
 
 	double pre_dot;

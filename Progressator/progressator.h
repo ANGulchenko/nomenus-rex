@@ -10,8 +10,7 @@ public:
 	void	setTotal(int total);
 	void	inc(int delta = 1);
 	void	print();
-
-	static	void	test();
+	void	test();
 
 private:
 	void count_decimal_digits_in_total();

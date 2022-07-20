@@ -10,11 +10,11 @@ RuleExtension::RuleExtension(Mode _mode, const std::string& _ext)
 
 }
 
-void	RuleExtension::process(const std::filesystem::path& name)
+void	RuleExtension::process(const RuleParams& params)
 {
 	if (ext == "")
 	{
-		result = name.extension();
+		result = params.relative_path.extension();
 	}else
 	{
 		result = ext;
@@ -43,23 +43,3 @@ void	RuleExtension::process(const std::filesystem::path& name)
 	}
 }
 
-void	RuleExtension::test()
-{
-	{
-		RuleExtension rule(RuleExtension::Mode::lowercase, "");
-		rule.process(std::filesystem::path("dir/subdir1/subdir2/file.dAt"));
-		testsCmp(1, rule, ".dat");
-	}
-
-	{
-		RuleExtension rule(RuleExtension::Mode::lowercase, "");
-		rule.process(std::filesystem::path("dir/subdir1/subdir2/file.РаСширение"));
-		testsCmp(2, rule, ".расширение");
-	}
-
-	{
-		RuleExtension rule(RuleExtension::Mode::lowercase, "");
-		rule.process(std::filesystem::path("dir/subdir1/subdir2/file.MiXМикС1"));
-		testsCmp(3, rule, ".mixмикс1");
-	}
-}

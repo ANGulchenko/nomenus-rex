@@ -2,19 +2,6 @@
 #include <iostream>
 #include "ruleBase.h"
 
-void testsCmp(int testIndex, RuleBase& rule, const std::string& correct_answer)
-{
-	if (std::string res = rule.getString(); res != correct_answer)
-	{
-		std::cerr << "Test №" << testIndex << ": "
-				  << rule.getTypeStr()<<" getString() == \"" << res << "\""
-				  << " but should be \""<< correct_answer <<"\"" << std::endl;
-		exit(EXIT_FAILURE);
-	}
-}
-
-
-
 RuleBase::RuleBase(RuleType _type)
 	: type(_type)
 {
@@ -38,6 +25,7 @@ std::string RuleBase::getTypeStr() const
 		case RuleType::Dir:				return "RuleType::Dir";
 		case RuleType::Filename:		return "RuleType::Filename";
 		case RuleType::Filesize:		return "RuleType::Filesize";
+		case RuleType::FileCreationDate:return "RuleType::FileCreationDate";
 		case RuleType::Replace:			return "RuleType::Replace";
 	}
 

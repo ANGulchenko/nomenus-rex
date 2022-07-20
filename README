@@ -127,6 +127,13 @@ Rules can be of this types:
                  date_format = "%Y-%m-%d";
              }
 
+  "filedate" : this is the time of last modification. "date_format" is the same as in STRFTIME(3)
+             ────┨  Example  ┠────────────────
+             {
+                 type        = "filedate";
+                 date_format = "%Y-%m-%d";
+             }
+
   "text"     : just any text
              ────┨  Example  ┠────────────────
              {

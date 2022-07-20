@@ -7,7 +7,7 @@ class RuleText: public RuleBase
 {
 public:
 	RuleText(const std::string& format);
-	static void	test();
+	void	process(const RuleParams& params) override;
 };
 
 #endif

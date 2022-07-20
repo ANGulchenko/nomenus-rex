@@ -9,9 +9,9 @@ RuleFilename::RuleFilename(Mode _mode)
 
 }
 
-void	RuleFilename::process(const std::filesystem::path& name)
+void	RuleFilename::process(const RuleParams& params)
 {
-	result = name.stem();
+	result = params.relative_path.stem();
 
 	switch (mode)
 	{
@@ -36,18 +36,3 @@ void	RuleFilename::process(const std::filesystem::path& name)
 	}
 }
 
-void	RuleFilename::test()
-{
-	{
-		RuleFilename rule(RuleFilename::Mode::lowercase);
-		rule.process(std::filesystem::path("dir/subdir1/subdir2/fIlE.dAt"));
-		testsCmp(1, rule, "file");
-	}
-
-	{
-		RuleFilename rule(RuleFilename::Mode::uppercase);
-		rule.process(std::filesystem::path("dir/subdir1/subdir2/fileфайл.dat"));
-		testsCmp(2, rule, "FILEФАЙЛ");
-	}
-
-}
