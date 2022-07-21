@@ -451,8 +451,12 @@ rules = (
 		mode        = "lowercase";
 	}
 	/*{
-	 type        = "date";
-	 date_format = "%Y-%m-%d";
+		type        = "date";
+		date_format = "%Y-%m-%d";
+	},*/
+	/*{
+		type        = "filedate";
+		date_format = "%Y-%m-%d";
 	},*/
 	/*{
 	   type        = "filename";

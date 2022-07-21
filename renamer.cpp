@@ -70,16 +70,13 @@ void Renamer::testRenameBijection() const
 	std::map<fs::path, fs::path> result;
 	std::set<std::string> new_names;
 
-	size_t new_names_prev_size = 0;
 	for (auto& pair: rename_vector)
 	{
-		new_names.insert(pair.second);
-		if (new_names.size() == new_names_prev_size)
+		if (auto ins_res = new_names.insert(pair.second); ins_res.second == false)
 		{
-			// Insertion did nothing, so there was this name already;
+			// Isertion has failed, so we have a name collision here
 			result[pair.first] = pair.second;
 		}
-		new_names_prev_size = new_names.size();
 	}
 
 	if (result.size() > 0)
