@@ -1,3 +1,10 @@
+─────────────────┨ 0.8.0 ┠─────────────────
+1) New rule: "exec" allows to run any arbitrary command and use its stdout
+output in the new filename.
+
+2) In case of the error during the file renaming, the program will try to revert
+changes.
+
 ─────────────────┨ 0.7.0 ┠─────────────────
 1) New rule: File creation time. The syntax is the same as in the Date rule.
 

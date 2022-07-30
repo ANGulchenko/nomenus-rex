@@ -3,8 +3,7 @@
 #include <vector>
 
 RuleDir::RuleDir(Mode _mode, const std::string& _separator)
-	: RuleBase(RuleType::Dir)
-	, mode {_mode}
+	: mode {_mode}
 	, separator {_separator}
 {
 

@@ -2,7 +2,6 @@
 #include <iostream>
 
 RuleDate::RuleDate(const std::string& format)
-	: RuleBase(RuleType::Date)
 {
 	const size_t buffer_size = 80;
 	time_t rawtime;

@@ -4,8 +4,7 @@
 #include <cmath>
 
 RuleFilesize::RuleFilesize(Dimension _dimension, const std::string& _decimal_separator, bool _show_dimension)
-	: RuleBase(RuleType::Filesize)
-	, dimension{_dimension}
+	: dimension{_dimension}
 	, decimal_separator {_decimal_separator}
 	, show_dimension {_show_dimension}
 	, dimension_data {	{Dimension::B,   {.name = "B",   .size = 1}},

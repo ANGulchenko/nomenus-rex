@@ -36,6 +36,7 @@ ADD_LIBRARY(Rules STATIC
     Rules/ruleFilesize.cpp          Rules/ruleFilesize.h
     Rules/ruleFileCreationDate.cpp  Rules/ruleFileCreationDate.h
     Rules/ruleReplace.cpp           Rules/ruleReplace.h
+    Rules/ruleExec.cpp              Rules/ruleExec.h
 )
 
 ADD_LIBRARY(Tests STATIC
@@ -50,7 +51,7 @@ add_executable (nomenus-rex
 
 find_package(ICU REQUIRED COMPONENTS data i18n uc dt)
 
-target_link_libraries(nomenus-rex AnyOption Rules Tests Progressator config++)
+target_link_libraries(nomenus-rex AnyOption Tests Rules Progressator config++)
 target_link_libraries(nomenus-rex ICU::data ICU::i18n ICU::uc ICU::dt)
 
 target_include_directories(nomenus-rex PUBLIC

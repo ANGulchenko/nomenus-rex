@@ -8,8 +8,7 @@
 
 
 RuleFileCreationDate::RuleFileCreationDate(const std::string& _format)
-	: RuleBase(RuleType::FileCreationDate)
-	, format{_format}
+	: format{_format}
 {
 
 }

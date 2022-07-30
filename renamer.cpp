@@ -62,11 +62,11 @@ void Renamer::createRenameBijection()
 
 		pair.second = absolute_file_path_destination;
 	}
+
 }
 
 void Renamer::testRenameBijection() const
 {
-
 	std::map<fs::path, fs::path> result;
 	std::set<std::string> new_names;
 
@@ -104,7 +104,18 @@ void Renamer::executeRenameBijection()
 				fs::path dest_dir = element.second;
 				dest_dir.remove_filename();
 				fs::create_directories(dest_dir);
-				fs::copy(element.first, element.second, std::filesystem::copy_options::overwrite_existing);
+				try
+				{
+					fs::copy(element.first, element.second, std::filesystem::copy_options::overwrite_existing);
+				}
+				catch(std::filesystem::filesystem_error const& ex)
+				{
+					// In this case we should just notify the user and that's it: the user can
+					// delete the previously copied files by his own.
+					std::cerr << "\n what():  " << ex.what() << '\n';
+					exit(EXIT_FAILURE);
+				}
+
 				progress.inc();progress.print();
 			}
 		}break;
@@ -115,7 +126,29 @@ void Renamer::executeRenameBijection()
 				fs::path dest_dir = element.second;
 				dest_dir.remove_filename();
 				fs::create_directories(dest_dir);
-				fs::rename(element.first, element.second);
+				try
+				{
+					fs::rename(element.first, element.second);
+				}
+				catch(std::filesystem::filesystem_error const& ex)
+				{
+					// We need to rename the processed files back
+					std::cerr << "\n what():  " << ex.what() << '\n';
+					std::cerr << "Renaming files back to their original names...\n";
+
+					std::pair<fs::path, fs::path> problematic_pair = {ex.path1(), ex.path2()};
+					auto iter_of_problematic_pair = std::find(rename_vector.begin(),
+															  rename_vector.end(),
+															  problematic_pair);
+
+					for (auto i = rename_vector.begin(); i != iter_of_problematic_pair; ++i)
+					{
+						fs::rename((*i).second, (*i).first);
+					}
+
+					exit(EXIT_FAILURE);
+				}
+
 				progress.inc();progress.print();
 			}
 		}break;
@@ -123,13 +156,16 @@ void Renamer::executeRenameBijection()
 
 }
 
+
 void  Renamer::printRenameBijection() const
 {
 	for (auto& element: rename_vector)
 	{
 		std::cout << "┌╼" << element.first  << "\n" <<
-					 "└►" << element.second << "\n" << std::endl;
+					 "└►" << element.second << "\n\n";
 	}
+
+	std::cout << std::endl;
 }
 
 

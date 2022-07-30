@@ -1,73 +1,19 @@
 #include "tests.h"
-#include <iostream>
-
-
 
 void testRule(WhatToInit whatInit,
-						 WhatToTest whatTest,
-						 RuleBase& rule,
-						 const std::string& init_string,
-						 const std::string& correct_answer)
-{
+			  WhatToTest whatTest,
+			  RuleBase& rule,
+			  const std::string& init_string,
+			  const std::string& correct_answer);
 
-	std::string in_process("");
-	std::filesystem::path abs("");
-	std::filesystem::path rel("");
-
-	switch (whatInit)
-	{
-		case WhatToInit::relative:
-		{
-			rel = std::filesystem::path(init_string);
-		}break;
-		case WhatToInit::absolute:
-		{
-			abs = std::filesystem::path(init_string);
-		}break;
-		case WhatToInit::in_process:
-		{
-			in_process = init_string;
-		}break;
-	}
-
-
-	RuleParams params = {.absolute_path = abs,
-						 .relative_path = rel,
-						 .name_in_process = in_process};
-
-	rule.process(params);
-
-	switch (whatTest)
-	{
-		case WhatToTest::getString:
-		{
-			if (std::string res = rule.getString(); res != correct_answer)
-			{
-				std::cerr << "(" << rule.getTypeStr() <<"): \n"
-						  <<" getString() == \"" << res << "\" \n"
-						  << " but should be \""<< correct_answer <<"\"" << std::endl;
-				exit(EXIT_FAILURE);
-			}
-		}break;
-		case WhatToTest::in_process:
-		{
-			if (std::string res = params.name_in_process; res != correct_answer)
-			{
-				std::cerr << "(" << rule.getTypeStr() <<"): \n"
-						  <<" name_in_process == \"" << res << "\" \n"
-						  << " but should be \""<< correct_answer <<"\"" << std::endl;
-				exit(EXIT_FAILURE);
-			}
-		}break;
-
-	default:
-		break;
-	}
-
-}
 
 void tests()
 {
+	/// RuleExec //////////////////////////////////////////////////////////////////
+	{
+		RuleExec rule("echo '<Placeholder>' | grep -Eo '[0-9]+'", "<Placeholder>");
+		testRule(WhatToInit::absolute, WhatToTest::getString, rule, "/test/ololo0001.txt", "0001");
+	}
 	/// RuleText //////////////////////////////////////////////////////////////////
 	{
 		RuleText rule("Test");
@@ -204,5 +150,69 @@ void tests()
 
 	std::cerr << "All tests are done.\n";
 	exit(0);
+}
+
+
+void testRule(WhatToInit whatInit,
+			  WhatToTest whatTest,
+			  RuleBase& rule,
+			  const std::string& init_string,
+			  const std::string& correct_answer)
+{
+
+	std::string in_process("");
+	std::filesystem::path abs("");
+	std::filesystem::path rel("");
+
+	switch (whatInit)
+	{
+		case WhatToInit::relative:
+		{
+			rel = std::filesystem::path(init_string);
+		}break;
+		case WhatToInit::absolute:
+		{
+			abs = std::filesystem::path(init_string);
+		}break;
+		case WhatToInit::in_process:
+		{
+			in_process = init_string;
+		}break;
+	}
+
+
+	RuleParams params = {.absolute_path = abs,
+						 .relative_path = rel,
+						 .name_in_process = in_process};
+
+	rule.process(params);
+
+	switch (whatTest)
+	{
+		case WhatToTest::getString:
+		{
+			if (std::string res = rule.getString(); res != correct_answer)
+			{
+				std::cerr << "(" << typeid(rule).name() <<"): \n"
+						  <<" getString() == \"" << res << "\" \n"
+						  << " but should be \""<< correct_answer <<"\"" << std::endl;
+				exit(EXIT_FAILURE);
+			}
+		}break;
+		case WhatToTest::in_process:
+		{
+			if (std::string res = params.name_in_process; res != correct_answer)
+			{
+				std::cerr << "(" << typeid(rule).name() <<"): \n"
+						  <<" name_in_process == \"" << res << "\" \n"
+						  << " but should be \""<< correct_answer <<"\"" << std::endl;
+				exit(EXIT_FAILURE);
+			}
+		}break;
+
+	default:
+		break;
+	}
+
 }
 

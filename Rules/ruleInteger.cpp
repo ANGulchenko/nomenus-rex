@@ -2,8 +2,7 @@
 #include <algorithm>
 
 RuleInteger::RuleInteger(Mode _mode, int _start, int _step, int _padding)
-	: RuleBase(RuleType::Integer)
-	, number {_start}
+	: number {_start}
 	, step {_step}
 	, mode {_mode}
 	, zero_padding_size {_padding}

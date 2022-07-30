@@ -3,8 +3,7 @@
 #include <unicode/unistr.h>
 
 RuleFilename::RuleFilename(Mode _mode)
-	: RuleBase(RuleType::Filename)
-	, mode{_mode}
+	: mode{_mode}
 {
 
 }

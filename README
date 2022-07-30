@@ -222,4 +222,14 @@ Rules can be of this types:
                    to          = "Ololo";
                }
 
+   "exec"    : Runs the command (FILE *popen(const char *command, const char *type))
+               where all occurences of the placeholder are substituted with a filename.
+               Result of the rule is the stdout output of the command.
+               ────┨  Example  ┠────────────────
+               {
+                  type        = "exec";
+                  command     = "echo '<Placeholder>' | grep -Eo '[0-9]+'";
+                  placeholder = "<Placeholder>";
+               }
+
 

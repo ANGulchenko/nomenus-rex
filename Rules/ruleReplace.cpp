@@ -1,8 +1,7 @@
 #include "ruleReplace.h"
 
 RuleReplace::RuleReplace(const std::string& _what, const std::string& _to)
-	: RuleBase(RuleType::Replace)
-	, what {_what}
+	: what {_what}
 	, to {_to}
 {
 

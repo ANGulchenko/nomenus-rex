@@ -15,7 +15,8 @@ namespace fs = std::filesystem;
 
 int main(int argc, char *argv[])
 {
-	//tests();
+	//RuleExec rule;
+	tests();
 
 	bool askConfirmationForFileProcessing;
 

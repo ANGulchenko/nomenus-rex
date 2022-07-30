@@ -325,6 +325,17 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], bool& askConfir
 
 			renamer.rules.push_back(std::unique_ptr<RuleBase>(new RuleReplace(what, to)));
 		}
+		/////////////////////////////////////////////////////////////////////////
+		else
+		if (rule_type == "exec")
+		{
+			std::string  command;
+			std::string  placeholder;
+			getRuleVar(rule_raw, "command", rule_type, command);
+			getRuleVar(rule_raw, "placeholder", rule_type, placeholder);
+
+			renamer.rules.push_back(std::unique_ptr<RuleBase>(new RuleExec(command, placeholder)));
+		}
 	}
 }
 
@@ -474,6 +485,11 @@ rules = (
 	   type        = "replace";
 	   what        = "BlaBla";
 	   to          = "Ololo";
+	},*/
+	/*{
+	   type        = "exec";
+	   command     = "echo '<Placeholder>' | grep -Eo '[0-9]+'";
+	   placeholder = "<Placeholder>";
 	},*/
 );
 )CONFIG";

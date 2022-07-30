@@ -3,8 +3,7 @@
 #include <unicode/unistr.h>
 
 RuleExtension::RuleExtension(Mode _mode, const std::string& _ext)
-	: RuleBase(RuleType::Extension)
-	, mode{_mode}
+	: mode{_mode}
 	, ext {_ext}
 {
 
