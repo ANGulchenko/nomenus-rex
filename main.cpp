@@ -15,7 +15,9 @@ namespace fs = std::filesystem;
 
 int main(int argc, char *argv[])
 {
-	//tests();
+	#ifndef NDEBUG
+	tests();
+	#endif
 
 	bool askConfirmationForFileProcessing;
 

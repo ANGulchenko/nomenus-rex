@@ -149,7 +149,7 @@ void tests()
 	}
 
 	std::cerr << "All tests are done.\n";
-	exit(0);
+	//exit(0);
 }
 
 
