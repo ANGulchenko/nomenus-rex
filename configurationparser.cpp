@@ -172,7 +172,7 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], bool& askConfir
 	renamer.keep_dir_structure = keep_dir_structure;
 
 	Renamer::CopyOrRename copy_or_rename_mode =
-			enumParser/*<Renamer::CopyOrRename>*/(root, "Config root", "copy_or_rename", Renamer::CopyOrRename::copy,
+			enumParser<Renamer::CopyOrRename>(root, "Config root", "copy_or_rename",
 					   {
 						 {"copy", Renamer::CopyOrRename::copy},
 						 {"rename", Renamer::CopyOrRename::rename}
@@ -180,7 +180,7 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], bool& askConfir
 	renamer.copy_or_rename = copy_or_rename_mode;
 
 	Renamer::SortMode sort_mode =
-			enumParser(root, "Config root", "sort_mode", Renamer::SortMode::sic,
+			enumParser<Renamer::SortMode>(root, "Config root", "sort_mode",
 					   {
 						 {"sic", Renamer::SortMode::sic},
 						 {"az", Renamer::SortMode::az},
@@ -221,7 +221,7 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], bool& askConfir
 		if (rule_type == "dir")
 		{
 			RuleDir::Mode mode =
-				enumParser(rule_raw, rule_type, "mode", RuleDir::Mode::parent_only,
+				enumParser<RuleDir::Mode>(rule_raw, rule_type, "mode",
 				   {
 					 {"whole path", RuleDir::Mode::whole},
 					 {"parent dir only", RuleDir::Mode::parent_only}
@@ -236,7 +236,7 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], bool& askConfir
 		if (rule_type == "integer")
 		{
 			RuleInteger::Mode mode =
-				enumParser(rule_raw, rule_type, "mode", RuleInteger::Mode::global,
+				enumParser<RuleInteger::Mode>(rule_raw, rule_type, "mode",
 				   {
 					 {"global", RuleInteger::Mode::global},
 					 {"local at every dir", RuleInteger::Mode::local_at_every_dir}
@@ -257,7 +257,7 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], bool& askConfir
 		if (rule_type == "extension")
 		{
 			RuleExtension::Mode mode =
-				enumParser(rule_raw, rule_type, "mode", RuleExtension::Mode::sic,
+				enumParser<RuleExtension::Mode>(rule_raw, rule_type, "mode",
 				   {
 					 {"sic", RuleExtension::Mode::sic},
 					 {"lowercase", RuleExtension::Mode::lowercase},
@@ -275,7 +275,7 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], bool& askConfir
 		if (rule_type == "filename")
 		{
 			RuleFilename::Mode mode =
-				enumParser(rule_raw, rule_type, "mode", RuleFilename::Mode::sic,
+				enumParser<RuleFilename::Mode>(rule_raw, rule_type, "mode",
 				   {
 					 {"sic", RuleFilename::Mode::sic},
 					 {"lowercase", RuleFilename::Mode::lowercase},
@@ -290,7 +290,7 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], bool& askConfir
 		if (rule_type == "filesize")
 		{
 			RuleFilesize::Dimension dimension =
-				enumParser(rule_raw, rule_type, "dimension", RuleFilesize::Dimension::KiB,
+				enumParser<RuleFilesize::Dimension>(rule_raw, rule_type, "dimension",
 				   {
 					 {"B", RuleFilesize::Dimension::B},
 					 {"KiB", RuleFilesize::Dimension::KiB},

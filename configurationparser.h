@@ -46,7 +46,6 @@ private:
 	T enumParser(const Setting &settings,
 				 const std::string& rule_type,
 				 const std::string& var_name,
-				 T /*useless_var*/, /*to help template to deduct the T type*/
 				 const std::initializer_list<std::pair<const std::string, T>>& init_list
 				 )
 	{

@@ -15,7 +15,7 @@ namespace fs = std::filesystem;
 
 int main(int argc, char *argv[])
 {
-	#ifndef NDEBUG
+	#if !defined(NDEBUG)
 	tests();
 	#endif
 

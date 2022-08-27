@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cmath>
 #include <stdio.h>
+#include <array>
 
 
 RuleExec::RuleExec(const std::string& _command, const std::string& _placeholder)
