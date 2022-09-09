@@ -1,5 +1,5 @@
 ─────────────────┨ 0.8.1 ┠─────────────────
-1) -l parameter to suppress the text info from printing (file precessing
+1) -l parameter to suppress the text info from printing (file processing
 confirmation and error will be printed anyway)
 
 2) -p parameter limits the amount of bijections printed.
