@@ -24,6 +24,8 @@ parameters:
  -c  --config        sets the path to the configuration file
  -e  --example       Prints out the example configuration
  -y  --yes           Process files without confirmation
+ -l  --laconic       Print only error messages (don't affect process confirmation);
+ -p  --print_limit   Limit the amount of bijections printed.
 
 The only mandatory parameter is "-c"/"--config". Source and destination paths
 can be omitted if they're present in the configuration file. If paths are set in

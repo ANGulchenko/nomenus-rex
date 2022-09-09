@@ -16,7 +16,6 @@ public:
 	enum class CopyOrRename{copy, rename};
 	enum class SortMode{sic, az, za};
 	Renamer();
-	~Renamer();
 	////////////////////
 
 	fs::path applyRulesToOneFilename(const RuleParams& params);

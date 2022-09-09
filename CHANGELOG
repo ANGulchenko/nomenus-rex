@@ -1,3 +1,13 @@
+─────────────────┨ 0.8.1 ┠─────────────────
+1) -l parameter to suppress the text info from printing (file precessing
+confirmation and error will be printed anyway)
+
+2) -p parameter limits the amount of bijections printed.
+
+3) Added some debug/processing info (files amount and amount of time spent)
+
+4) Small refactoring here and there.
+
 ─────────────────┨ 0.8.0 ┠─────────────────
 1) New rule: "exec" allows to run any arbitrary command and use its stdout
 output in the new filename.

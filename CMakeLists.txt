@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 project(nomenus-rex
-        VERSION 0.8.0
+        VERSION 0.8.1
         HOMEPAGE_URL "https://github.com/ANGulchenko/nomenus-rex"
         DESCRIPTION "Nomenus-rex is a CLI utility for the file mass-renaming.")
 
@@ -47,6 +47,7 @@ add_executable (nomenus-rex
     main.cpp
     configurationparser.cpp configurationparser.h
     renamer.cpp renamer.h
+    cfgvarsingleton.cpp cfgvarsingleton.h
     )
 
 find_package(ICU REQUIRED COMPONENTS data i18n uc dt)

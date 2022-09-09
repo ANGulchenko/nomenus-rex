@@ -1,17 +1,9 @@
 #include <iostream>
-#include <filesystem>
-#include <time.h>
-#include <vector>
-#include <map>
-#include <set>
 
 #include "renamer.h"
 #include "configurationparser.h"
+#include "cfgvarsingleton.h"
 #include "Tests/tests.h"
-
-
-namespace fs = std::filesystem;
-
 
 int main(int argc, char *argv[])
 {
@@ -19,17 +11,18 @@ int main(int argc, char *argv[])
 	tests();
 	#endif
 
-	bool askConfirmationForFileProcessing;
-
 	Renamer renamer;
-	ConfigurationParser cfg_parser(argc, argv, askConfirmationForFileProcessing, renamer);
+	// ConfigurationParser also fills CfgVarSingleton
+	ConfigurationParser cfg_parser(argc, argv, renamer);
+
+	cfg::print("Nomenus-rex("+CfgVarSingleton::Instance().nomenus_ver_str+")\n");
 
 	renamer.createRenameBijection();
 	renamer.testRenameBijection();
 	renamer.printRenameBijection();
 
 
-	if (askConfirmationForFileProcessing)
+	if (CfgVarSingleton::Instance().ask_confirmation_for_file_processing)
 	{
 		std::cout << "Press 'y' to process the files. Other button to cancel." << std::endl;
 		char approvement;

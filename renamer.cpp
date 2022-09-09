@@ -1,20 +1,17 @@
 #include "renamer.h"
 #include "Progressator/progressator.h"
+#include "cfgvarsingleton.h"
 
 #include <set>
 #include <iostream>
 #include <unicode/unistr.h>
 #include <algorithm>
+#include <chrono>
 
 Renamer::Renamer()
 	: keep_dir_structure {false}
 	, copy_or_rename {CopyOrRename::copy}
 	, sort_mode {SortMode::sic}
-{
-
-}
-
-Renamer::~Renamer()
 {
 
 }
@@ -33,6 +30,9 @@ fs::path Renamer::applyRulesToOneFilename(const RuleParams& params)
 
 void Renamer::createRenameBijection()
 {
+	cfg::print("Start createRenameBijection()... ");
+	auto start = std::chrono::high_resolution_clock::now();
+
 	// Get our directories in the array
 	getSourceFilenames(rename_vector, source_dir);
 	sortSourceFilenames(rename_vector, sort_mode);
@@ -63,10 +63,20 @@ void Renamer::createRenameBijection()
 		pair.second = absolute_file_path_destination;
 	}
 
+	auto stop = std::chrono::high_resolution_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+	auto time_delta = duration.count();
+
+	cfg::print("Finished in " + std::to_string(time_delta) + " microseconds. "
+			   "(" + std::to_string(rename_vector.size()) + " filename pairs)\n");
+
 }
 
 void Renamer::testRenameBijection() const
 {
+	cfg::print("Start testRenameBijection()... ");
+	auto start = std::chrono::high_resolution_clock::now();
+
 	std::map<fs::path, fs::path> result;
 	std::set<std::string> new_names;
 
@@ -84,11 +94,17 @@ void Renamer::testRenameBijection() const
 		std::cerr << "ERROR: Filenames collision." << std::endl;
 		for (auto& element: result)
 		{
-			std::cout << "┌╼" << element.first  << "\n" <<
+			std::cerr << "┌╼" << element.first  << "\n" <<
 						 "└╳" << element.second << "\n" << std::endl;
 		}
 		exit(EXIT_FAILURE);
 	}
+
+	auto stop = std::chrono::high_resolution_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+	auto time_delta = duration.count();
+
+	cfg::print("Finished in " + std::to_string(time_delta) + " microseconds.\n");
 }
 
 void Renamer::executeRenameBijection()
@@ -159,10 +175,22 @@ void Renamer::executeRenameBijection()
 
 void  Renamer::printRenameBijection() const
 {
-	for (auto& element: rename_vector)
+	if (!CfgVarSingleton::Instance().verbose)
 	{
-		std::cout << "┌╼" << element.first  << "\n" <<
-					 "└►" << element.second << "\n\n";
+		return;
+	}
+
+	int amount_to_print = rename_vector.size()-1;
+	if (CfgVarSingleton::Instance().amount_of_bijections_printed >= 0
+		&& CfgVarSingleton::Instance().amount_of_bijections_printed < amount_to_print)
+	{
+		amount_to_print = CfgVarSingleton::Instance().amount_of_bijections_printed;
+	}
+
+	for (size_t i = rename_vector.size() - amount_to_print; i < rename_vector.size(); ++i)
+	{
+		std::cout << "┌╼" << rename_vector[i].first  << "\n" <<
+					 "└►" << rename_vector[i].second << "\n";
 	}
 
 	std::cout << std::endl;

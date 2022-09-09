@@ -3,71 +3,91 @@
 #include "AnyOption/anyoption.h"
 #include "configurationparser.h"
 #include "version.h"
+#include "cfgvarsingleton.h"
 
-ConfigurationParser::ConfigurationParser(int argc, char *argv[], bool& askConfirmationBeforeFileProcessing, Renamer& renamer)
+ConfigurationParser::ConfigurationParser(int argc, char *argv[], Renamer& renamer)
 {
 	std::string source;
 	std::string destination;
 	std::string config;
 
-	AnyOption *opt = new AnyOption();
-	// report version
-	std::string VERSION_TOTAL = std::to_string(VERSION_MAJOR)+"."+std::to_string(VERSION_MINOR)+"."+std::to_string(VERSION_PATCH);
-	std::string intro_line = "Nomenus-rex("+VERSION_TOTAL+") is a file mass-renaming utility.";
-	opt->addUsage(intro_line.c_str());
-	opt->addUsage("Parameters: ");
-	opt->addUsage("");
-	opt->addUsage(" -h  --help          Prints this help ");
-	opt->addUsage(" -s  --source        Source dir");
-	opt->addUsage(" -d  --destination   Destination dir");
-	opt->addUsage(" -c  --config        Configuration file");
-	opt->addUsage(" -e  --example       Prints out the example configuration");
-	opt->addUsage(" -y  --yes           Process files without confirmation");
-	opt->addUsage("");
-	opt->addUsage("Directories can be also set up in the config file. CLI parameters have higher priority.");
+	AnyOption opt;
+	std::string intro_line = "Nomenus-rex("+CfgVarSingleton::Instance().nomenus_ver_str+") is a file mass-renaming utility.";
+	opt.addUsage(intro_line.c_str());
+	opt.addUsage("Parameters: ");
+	opt.addUsage("");
+	opt.addUsage(" -h  --help          Prints this help ");
+	opt.addUsage(" -s  --source        Source dir");
+	opt.addUsage(" -d  --destination   Destination dir");
+	opt.addUsage(" -c  --config        Configuration file");
+	opt.addUsage(" -e  --example       Prints out the example configuration");
+	opt.addUsage(" -y  --yes           Process files without confirmation");
+	opt.addUsage(" -l  --laconic       Print only error messages");
+	string print_limit =
+				  " -p  --print_limit   Limit the amount of bijections printed. "+std::to_string(CfgVarSingleton::Instance().amount_of_bijections_printed)+" by default";
+	opt.addUsage(print_limit.c_str());
+	opt.addUsage("");
+	opt.addUsage("Directories can be also set up in the config file. CLI parameters have higher priority.");
 
-	opt->setFlag("help", 'h');
-	opt->setCommandOption("source", 's');
-	opt->setCommandOption("destination", 'd');
-	opt->setCommandOption("config", 'c');
-	opt->setFlag("yes", 'y');
-	opt->setFlag("example", 'e');
+	opt.setFlag("help", 'h');
+	opt.setCommandOption("source", 's');
+	opt.setCommandOption("destination", 'd');
+	opt.setCommandOption("config", 'c');
+	opt.setFlag("yes", 'y');
+	opt.setFlag("example", 'e');
+	opt.setFlag("laconic", 'l');
+	opt.setCommandOption("print_limit", 'p');
 
-	opt->processCommandArgs(argc, argv);
+	opt.processCommandArgs(argc, argv);
 
-	if (opt->hasOptions())
+	if (opt.hasOptions())
 	{
-		if (opt->getFlag("help") || opt->getFlag('h'))
+		if (opt.getFlag("help") || opt.getFlag('h'))
 		{
-			opt->printUsage();
+			opt.printUsage();
 			exit(EXIT_SUCCESS);
 		}
 
-		if (opt->getFlag("yes") || opt->getFlag('y'))
+		if (opt.getFlag("yes") || opt.getFlag('y'))
 		{
-			askConfirmationBeforeFileProcessing = false;
+			CfgVarSingleton::Instance().ask_confirmation_for_file_processing = false;
 		}else
 		{
-			askConfirmationBeforeFileProcessing = true;
+			CfgVarSingleton::Instance().ask_confirmation_for_file_processing = true;
 		}
 
-		if (opt->getFlag("example") || opt->getFlag('e'))
+		if (opt.getFlag("laconic") || opt.getFlag('l'))
+		{
+			CfgVarSingleton::Instance().verbose = false;
+		}else
+		{
+			CfgVarSingleton::Instance().verbose = true;
+		}
+
+		if (opt.getFlag("example") || opt.getFlag('e'))
 		{
 			printTypicalConfig();
 			exit(EXIT_SUCCESS);
 		}
 
-		if (opt->getValue('s') != NULL || opt->getValue("source") != NULL)
+		if (opt.getValue('s') != NULL || opt.getValue("source") != NULL)
 		{
-			source = string(opt->getValue("source"));
+			source = string(opt.getValue("source"));
 		}
-		if (opt->getValue('d') != NULL || opt->getValue("destination") != NULL)
+
+		if (opt.getValue('d') != NULL || opt.getValue("destination") != NULL)
 		{
-			destination = string(opt->getValue("destination"));
+			destination = string(opt.getValue("destination"));
 		}
-		if (opt->getValue('c') != NULL || opt->getValue("config") != NULL)
+
+		if (opt.getValue('c') != NULL || opt.getValue("config") != NULL)
 		{
-			config = string(opt->getValue("config"));
+			config = string(opt.getValue("config"));
+		}
+
+		if (opt.getValue('p') != NULL || opt.getValue("print_limit") != NULL)
+		{
+			CfgVarSingleton::Instance().amount_of_bijections_printed = stoi(string(opt.getValue("print_limit")));
 		}
 	}
 
@@ -76,13 +96,11 @@ ConfigurationParser::ConfigurationParser(int argc, char *argv[], bool& askConfir
 	if (config == "")
 	{
 		std::cerr << "\nERROR: No config file is specified!" << std::endl;
-		opt->printUsage();
+		opt.printUsage();
 		exit(EXIT_FAILURE);
 	}
 
 	config = getConfigPathString(config);
-
-	delete opt;
 
 	// Parsing the config, creating the Rules objects and putting them into the array.
 	makeSureThatConfigDirIsExist();
