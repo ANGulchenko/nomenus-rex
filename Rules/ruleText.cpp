@@ -1,12 +1,13 @@
 #include "ruleText.h"
 
-RuleText::RuleText(const std::string& text)
+RuleText::RuleText(const std::string& _text)
+	: text {_text}
 {
-	result = text;
+
 }
 
-void	RuleText::process(const RuleParams&)
+std::string	RuleText::process(const RuleParams&)
 {
-
+	return text;
 }
 

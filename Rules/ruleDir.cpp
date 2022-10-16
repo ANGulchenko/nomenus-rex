@@ -9,9 +9,9 @@ RuleDir::RuleDir(Mode _mode, const std::string& _separator)
 
 }
 
-void	RuleDir::process(const RuleParams& params)
+std::string	RuleDir::process(const RuleParams& params)
 {
-	RuleBase::result.clear();
+	std::string result;
 	std::vector<std::string> path;
 	for (auto it = params.relative_path.begin(); it != params.relative_path.end(); ++it)
 	{
@@ -26,7 +26,7 @@ void	RuleDir::process(const RuleParams& params)
 	}else
 	if (mode == Mode::whole && path.size() > 0)
 	{
-		for (auto& dir: path)
+		for (const auto& dir: path)
 		{
 			result += dir + separator;
 		}
@@ -34,5 +34,7 @@ void	RuleDir::process(const RuleParams& params)
 		// Removing the separator from the end of the string
 		result.erase(result.size() - separator.size());
 	}
+
+	return result;
 }
 

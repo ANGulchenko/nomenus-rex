@@ -10,8 +10,9 @@ RuleInteger::RuleInteger(Mode _mode, int _start, int _step, int _padding)
 
 }
 
-void	RuleInteger::process(const RuleParams& params)
+std::string	RuleInteger::process(const RuleParams& params)
 {
+	std::string result;
 	switch (mode)
 	{
 		case Mode::global:
@@ -29,6 +30,8 @@ void	RuleInteger::process(const RuleParams& params)
 			number_per_path[path]++;
 		}
 	}
+
+	return result;
 }
 
 

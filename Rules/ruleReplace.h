@@ -7,7 +7,7 @@ class RuleReplace: public RuleBase
 {
 public:
 	RuleReplace(const std::string& _what, const std::string& _to);
-	void	process(const RuleParams& params) override;
+	std::string	process(const RuleParams&) override;
 private:
 	std::string what;
 	std::string to;

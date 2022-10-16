@@ -6,8 +6,10 @@
 class RuleText: public RuleBase
 {
 public:
-	RuleText(const std::string& format);
-	void	process(const RuleParams& params) override;
+	explicit RuleText(const std::string& text);
+	std::string	process(const RuleParams&) override;
+private:
+	std::string text;
 };
 
 #endif

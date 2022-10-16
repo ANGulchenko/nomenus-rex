@@ -13,9 +13,9 @@ RuleFileCreationDate::RuleFileCreationDate(const std::string& _format)
 
 }
 
-void	RuleFileCreationDate::process(const RuleParams& params)
+std::string	RuleFileCreationDate::process(const RuleParams& params)
 {
-	result.clear();
+	//std::string result;
 	struct stat st;
 	const size_t buffer_size = 80;
 	char buffer [buffer_size];
@@ -32,6 +32,7 @@ void	RuleFileCreationDate::process(const RuleParams& params)
 		exit(EXIT_FAILURE);
 	}
 
-	result = std::string(buffer);
+	//result = std::string(buffer);
+	return std::string(buffer);
 
 }

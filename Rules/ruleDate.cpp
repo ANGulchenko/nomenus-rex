@@ -21,7 +21,7 @@ RuleDate::RuleDate(const std::string& format)
 	result = std::string(buffer);
 }
 
-void	RuleDate::process(const RuleParams&)
+std::string	RuleDate::process(const RuleParams&)
 {
-
+	return result;
 }

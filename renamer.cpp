@@ -18,16 +18,6 @@ Renamer::Renamer()
 
 ///////////////////
 
-fs::path Renamer::applyRulesToOneFilename(const RuleParams& params)
-{
-	for (std::unique_ptr<RuleBase>& rule: rules)
-	{
-		rule->process(params);
-		params.name_in_process += rule->getString();
-	}
-	return fs::path(params.name_in_process);
-}
-
 void Renamer::createRenameBijection()
 {
 	cfg::print("Start createRenameBijection()... ");
@@ -49,7 +39,10 @@ void Renamer::createRenameBijection()
 							 .relative_path = relative_file_path_source,
 							 .name_in_process = name_in_process};
 
-		fs::path new_name = applyRulesToOneFilename(params);
+		for (std::unique_ptr<RuleBase>& rule: rules)
+		{
+			params.name_in_process += rule->process(params);
+		}
 
 		fs::path relative_file_path_without_filename = relative_file_path_source;
 		relative_file_path_without_filename.remove_filename();
@@ -58,7 +51,7 @@ void Renamer::createRenameBijection()
 		{
 			absolute_file_path_destination /= relative_file_path_without_filename;
 		}
-		absolute_file_path_destination /= new_name;
+		absolute_file_path_destination /= name_in_process;
 
 		pair.second = absolute_file_path_destination;
 	}

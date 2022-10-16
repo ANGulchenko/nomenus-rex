@@ -7,13 +7,13 @@ RuleReplace::RuleReplace(const std::string& _what, const std::string& _to)
 
 }
 
-void	RuleReplace::process(const RuleParams& params)
+std::string	RuleReplace::process(const RuleParams& params)
 {
+	//std::string result;
 	if (what.empty())
 	{
 		// It doesn't make any sense, so someone inevitably WILL do it.
-		result = params.name_in_process;
-		return;
+		return ""; //params.name_in_process;
 	}
 
 	size_t pos = 0;
@@ -23,6 +23,7 @@ void	RuleReplace::process(const RuleParams& params)
 		pos += what.length();
 	}
 
-	result = params.name_in_process;
+	//result = params.name_in_process;
+	return "";//params.name_in_process;
 }
 

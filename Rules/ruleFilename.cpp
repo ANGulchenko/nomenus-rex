@@ -8,9 +8,9 @@ RuleFilename::RuleFilename(Mode _mode)
 
 }
 
-void	RuleFilename::process(const RuleParams& params)
+std::string	RuleFilename::process(const RuleParams& params)
 {
-	result = params.relative_path.stem();
+	std::string result = params.relative_path.stem();
 
 	switch (mode)
 	{
@@ -33,5 +33,7 @@ void	RuleFilename::process(const RuleParams& params)
 
 		}break;
 	}
+
+	return result;
 }
 

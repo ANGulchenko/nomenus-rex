@@ -8,7 +8,7 @@ class RuleExec: public RuleBase
 {
 public:
 	RuleExec(const std::string& command, const std::string& placeholder);
-	void	process(const RuleParams& params) override;
+	std::string	process(const RuleParams&) override;
 private:
 	std::string command;
 	std::string placeholder;

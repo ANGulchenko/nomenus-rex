@@ -14,11 +14,7 @@ struct RuleParams
 class RuleBase
 {
 public:
-	std::string		getString() const;
-	virtual void	process(const RuleParams&) = 0;
-
-protected:
-	std::string result;
+	virtual std::string	process(const RuleParams&) = 0;
 };
 
 #endif // RULE_H

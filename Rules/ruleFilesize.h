@@ -14,7 +14,7 @@ class RuleFilesize: public RuleBase
 public:
 	enum class Dimension {B, KiB, MiB, GiB};
 	RuleFilesize(Dimension _dimension, const std::string& _decimal_separator, bool _show_dimension);
-	void	process(const RuleParams& params) override;
+	std::string	process(const RuleParams&) override;
 private:
 	Dimension	dimension;
 	std::string decimal_separator;

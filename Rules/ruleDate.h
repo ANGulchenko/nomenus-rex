@@ -8,7 +8,9 @@ class RuleDate: public RuleBase
 {
 public:
 	explicit RuleDate(const std::string& format);
-	void	process(const RuleParams& params) override;
+	std::string	process(const RuleParams&) override;
+private:
+	std::string result;
 };
 
 #endif

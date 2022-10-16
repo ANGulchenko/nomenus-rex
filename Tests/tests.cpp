@@ -125,7 +125,7 @@ void tests()
 				 "0002");
 	}
 
-	/// RuleInteger //////////////////////////////////////////////////////////////////
+	/// RuleReplace //////////////////////////////////////////////////////////////////
 
 	{
 		RuleReplace rule("Bla", "Fuh");
@@ -185,16 +185,16 @@ void testRule(WhatToInit whatInit,
 						 .relative_path = rel,
 						 .name_in_process = in_process};
 
-	rule.process(params);
+	std::string process_res = rule.process(params);
 
 	switch (whatTest)
 	{
 		case WhatToTest::getString:
 		{
-			if (std::string res = rule.getString(); res != correct_answer)
+			if (std::string res = process_res; res != correct_answer)
 			{
 				std::cerr << "(" << typeid(rule).name() <<"): \n"
-						  <<" getString() == \"" << res << "\" \n"
+						  <<" process() result == \"" << res << "\" \n"
 						  << " but should be \""<< correct_answer <<"\"" << std::endl;
 				exit(EXIT_FAILURE);
 			}

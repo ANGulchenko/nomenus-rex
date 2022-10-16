@@ -18,7 +18,7 @@ public:
 	Renamer();
 	////////////////////
 
-	fs::path applyRulesToOneFilename(const RuleParams& params);
+	//fs::path applyRulesToOneFilename(const RuleParams& params);
 	void createRenameBijection();
 	void testRenameBijection() const;
 	void executeRenameBijection();

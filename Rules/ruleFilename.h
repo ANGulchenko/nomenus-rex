@@ -9,7 +9,7 @@ class RuleFilename: public RuleBase
 public:
 	enum class Mode {lowercase, uppercase, sic};
 	explicit RuleFilename(Mode _mode);
-	void	process(const RuleParams& params) override;
+	std::string	process(const RuleParams&) override;
 private:
 	Mode		mode;
 };

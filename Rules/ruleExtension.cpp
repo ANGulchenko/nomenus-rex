@@ -9,8 +9,10 @@ RuleExtension::RuleExtension(Mode _mode, const std::string& _ext)
 
 }
 
-void	RuleExtension::process(const RuleParams& params)
+std::string	RuleExtension::process(const RuleParams& params)
 {
+	std::string result;
+
 	if (ext == "")
 	{
 		result = params.relative_path.extension();
@@ -40,5 +42,7 @@ void	RuleExtension::process(const RuleParams& params)
 
 		}break;
 	}
+
+	return result;
 }
 

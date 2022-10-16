@@ -13,9 +13,9 @@ RuleExec::RuleExec(const std::string& _command, const std::string& _placeholder)
 
 }
 
-void	RuleExec::process(const RuleParams& params)
+std::string	RuleExec::process(const RuleParams& params)
 {
-	result.clear();
+	std::string result;
 
 	/// CMD GENERATION /////////
 	std::string finished_command = command;
@@ -44,4 +44,6 @@ void	RuleExec::process(const RuleParams& params)
 	{
 		result.pop_back();
 	}
+
+	return result;
 }
