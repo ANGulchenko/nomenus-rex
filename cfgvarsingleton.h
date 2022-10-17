@@ -13,10 +13,10 @@ public:
 				return theSingleInstance;
 		}
 
-		std::string	nomenus_ver_str;
-		bool	ask_confirmation_for_file_processing;
-		bool	verbose;
-		int		amount_of_bijections_printed;
+		const std::string	nomenus_ver_str;
+		bool				ask_confirmation_for_file_processing;
+		bool				verbose;
+		int					amount_of_bijections_printed;
 
 private:
 		CfgVarSingleton();
