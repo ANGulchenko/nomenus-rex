@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 #include "renamer.h"
 #include "configurationparser.h"
@@ -15,7 +16,7 @@ int main(int argc, char *argv[])
 	// ConfigurationParser also fills CfgVarSingleton
 	ConfigurationParser cfg_parser(argc, argv, renamer);
 
-	cfg::print("Nomenus-rex("+CfgVarSingleton::Instance().nomenus_ver_str+")\n");
+	vcout << "Nomenus-rex(" << CfgVarSingleton::Instance().nomenus_ver_str <<")\n";
 
 	renamer.createRenameBijection();
 	renamer.testRenameBijection();
@@ -24,16 +25,17 @@ int main(int argc, char *argv[])
 
 	if (CfgVarSingleton::Instance().ask_confirmation_for_file_processing)
 	{
-		std::cout << "Press 'y' to process the files. Other button to cancel." << std::endl;
+		//v1cout new_cout;
+		std::cerr << "Press 'y' to process the files. Other button to cancel." << std::endl;
 		char approvement;
 		std::cin >> approvement;
 		if (approvement == 'y')
 		{
 			renamer.executeRenameBijection();
-			std::cout << "The process is done." << std::endl;
+			vcout << "The process is done." << std::endl;
 		}else
 		{
-			std::cout << "The process is canceled." << std::endl;
+			vcout << "The process is canceled." << std::endl;
 		}
 	}else
 	{

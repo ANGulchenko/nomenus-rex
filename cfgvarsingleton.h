@@ -2,6 +2,7 @@
 #define CFGVARSINGLETON_H
 
 #include <string>
+#include <iostream>
 #include "version.h"
 
 class CfgVarSingleton
@@ -24,9 +25,24 @@ private:
 		CfgVarSingleton& operator=(const CfgVarSingleton&) = delete;
 };
 
-namespace cfg
+
+class vstream: public std::ostream
 {
-	void print(const std::string& str);
+
+
+};
+
+template <typename T>
+vstream& operator<<(vstream& out, T str)
+{
+	if (CfgVarSingleton::Instance().verbose)
+	{
+		std::cout << str;
+	}
+
+	return out;
 }
+
+extern vstream vcout;
 
 #endif

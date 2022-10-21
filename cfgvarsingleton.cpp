@@ -1,5 +1,4 @@
 #include "cfgvarsingleton.h"
-#include <iostream>
 
 CfgVarSingleton::CfgVarSingleton()
 	: nomenus_ver_str { std::to_string(VERSION_MAJOR)+"."
@@ -13,10 +12,6 @@ CfgVarSingleton::CfgVarSingleton()
 
 }
 
-void cfg::print(const std::string& str)
-{
-	if (CfgVarSingleton::Instance().verbose)
-	{
-		std::cout << str;
-	}
-}
+vstream vcout;
+
+

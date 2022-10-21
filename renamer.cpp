@@ -20,7 +20,7 @@ Renamer::Renamer()
 
 void Renamer::createRenameBijection()
 {
-	cfg::print("Start createRenameBijection()... ");
+	vcout << "Start createRenameBijection()... ";
 	auto start = std::chrono::high_resolution_clock::now();
 
 	// Get our directories in the array
@@ -60,14 +60,14 @@ void Renamer::createRenameBijection()
 	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
 	auto time_delta = duration.count();
 
-	cfg::print("Finished in " + std::to_string(time_delta) + " microseconds. "
-			   "(" + std::to_string(rename_vector.size()) + " filename pairs)\n");
+	vcout << "Finished in " << std::to_string(time_delta) << " microseconds. "
+			   << "(" << std::to_string(rename_vector.size()) << " filename pairs)\n";
 
 }
 
 void Renamer::testRenameBijection() const
 {
-	cfg::print("Start testRenameBijection()... ");
+	vcout << "Start testRenameBijection()... ";
 	auto start = std::chrono::high_resolution_clock::now();
 
 	std::map<fs::path, fs::path> result;
@@ -85,7 +85,7 @@ void Renamer::testRenameBijection() const
 	if (result.size() > 0)
 	{
 		std::cerr << "ERROR: Filenames collision." << std::endl;
-		for (auto& element: result)
+		for (const auto& element: result)
 		{
 			std::cerr << "┌╼" << element.first  << "\n" <<
 						 "└╳" << element.second << "\n" << std::endl;
@@ -97,7 +97,7 @@ void Renamer::testRenameBijection() const
 	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
 	auto time_delta = duration.count();
 
-	cfg::print("Finished in " + std::to_string(time_delta) + " microseconds.\n");
+	vcout << "Finished in " << std::to_string(time_delta) << " microseconds.\n";
 }
 
 void Renamer::executeRenameBijection()
